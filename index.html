@@ -11,18 +11,18 @@
     <body>
         <div id="home">
             <button type="button" id="rankingButton" onclick="location.href='./ranking.html'">ランキング</button>
-            
+            <button type="button" onclick="logout();">ログアウト</button>
             <div id="info"></div>
 
-            <dev id="userName"></dev>
-            <dev id="dexRange"></dev>
-            <dev id="effectiveSuper"></dev>
-            <dev id="effectiveNotVery"></dev>
-            <dev id="effectiveNot"></dev>
-            <dev id="countShinyRandom"></dev>
-            <dev id="pointShiny"></dev>
-
-            <div id="point"></div>
+            <br>図鑑範囲：<dev id="dexRange"></dev>
+            <br>こうかばつぐんの倍率：<dev id="effectiveSuper"></dev>
+            <br>こうかいまひとつの倍率：<dev id="effectiveNotVery"></dev>
+            <br>こうかなしの倍率：<dev id="effectiveNot"></dev>
+            <br>野生の色違いの確率：<dev id="countShinyRandom"></dev>
+            <br>色違いの得点倍率：×<dev id="pointShiny"></dev>
+            
+            <br>ユーザ名：<dev id="userName"></dev>
+            <br>得点：<div id="point"></div>
 
             <form id="formHome" class="formHome" onsubmit="displayBattle(); return false;">
 
