@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ポケバトル</title>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+
+    <body>
+        <button type="button" onclick="location.href='./ranking.html'">ランキング</button>
+        
+        <div class="signIn">
+            <h2>サインイン</h2>
+
+            <div class="label">　ユーザ名：
+                <label>
+                    <input type="text" id="userNameSignIn">
+                </label>
+            </div>
+
+            <div class="label">秘密の暗号：
+                <label>
+                    <input type="text" id="passwordSignIn">
+                </label>
+            </div>
+
+            <p></p>
+
+            <button type="button" id="buttonSignIn" onclick="signIn();">サインイン</button>
+
+            <button type="button" onclick="logout();">オートフィルを削除</button>
+
+            <div id="infoSignIn">　</div>
+        </div>
+
+        <p></p>
+
+        <div class="signUp">
+            <h2>新規登録</h2>
+
+            <div class="label">　ユーザ名：
+                <label>
+                    <input type="text" id="userNameSignUp">
+                </label>
+            </div>
+            <div class="note">　＊入力必須、半角英字１～１２文字</div>
+
+            <div class="label">秘密の暗号：
+                <label>
+                    <input type="text" id="passwordSignUp">
+                </label>
+            </div>
+            <div class="note">　＊入力必須、半角英字３文字</div>
+
+            <p></p>
+
+            <div class="note">【注意】登録した情報は流出すると思ってください(笑)</div>
+
+            <button type="button" id="buttonSignUp" onclick="signUp();">新規登録</button>
+
+            <div id="infoSignUp">　</div>
+        </div>
+        
+        <script src="./js/common.js"></script>
+        <script src="./js/signIn.js"></script>
+    </body>
+</html>

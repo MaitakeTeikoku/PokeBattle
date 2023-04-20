@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+        <title>ポケバトル</title>
+    </head>
+
+    <body>
+        <div id="home">
+            <button type="button" id="rankingButton" onclick="location.href='./ranking.html'">ランキング</button>
+            
+            <div id="info"></div>
+
+            <dev id="userName"></dev>
+            <dev id="dexRange"></dev>
+            <dev id="effectiveSuper"></dev>
+            <dev id="effectiveNotVery"></dev>
+            <dev id="effectiveNot"></dev>
+            <dev id="countShinyRandom"></dev>
+            <dev id="pointShiny"></dev>
+
+            <div id="point"></div>
+
+            <form id="formHome" class="formHome" onsubmit="displayBattle(); return false;">
+
+                <table id="tableHomeList">
+                    <tr>
+                        <th>ポケモン</th>
+                        <th>名前</th>
+                        <th>タイプ</th>
+                        <th>実数値<br>(種族値×経験値)</th>
+                        <th>消費ライフ</th>
+                    </tr>
+                </table>
+
+                <div id="homeIcons">
+                    <label>野生の経験値：<div id="valueExpFront"></div>
+                    <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
+                    </label>
+
+                    <input type="submit" id="submitHome" value="バトルスタート">
+                </div>
+            </form>
+        </div>
+
+
+
+        <div id="battle">
+            <dev class="front">
+                <dev>
+                    <dev id="nameFront"></dev>
+                    <dev id="typeFront"></dev>
+                    <dev id="infoFront"></dev>
+                </dev>
+                
+                <img id="imgSrcFront">
+            </dev>
+    
+            <p>　</p>
+    
+            <p>　</p>
+    
+            <p>　</p>
+    
+            <dev class="back">
+                <img id="imgSrcBack">
+                <dev>
+                    <dev id="nameBack"></dev>
+                    <dev id="typeBack"></dev>
+                    <dev id="infoBack"></dev>
+                </dev>
+            </dev>
+
+            <p>　</p>
+
+            <div id="infoBattle"></div>
+            <div id="message"></div>
+        </div>
+
+
+
+        <div id="change">
+            <form id="formChange" class="formChange" onsubmit="change(); return false;">
+                <table id="tableChangeList">
+                    <tr>
+                        <th>ポケモン</th>
+                        <th>名前</th>
+                        <th>タイプ</th>
+                        <th>実数値<br>(種族値×経験値)</th>
+                        <th>消費ライフ</th>
+                    </tr>
+                </table>
+                
+                <dev id="changeIcons">
+                    <input type="submit" id="submitChange" value="交代">
+                </dev>
+            </form>
+            
+        </div>
+
+
+
+        <button type="button" id="backButton" onclick="location.reload();">戻る</button>
+        
+
+        
+        <script src="./js/common.js"></script>
+        <script src="./js/indexHome.js"></script>
+        <script src="./js/indexSlider.js"></script>
+        <script src="./js/indexBattle.js"></script>
+        <script src="./js/indexChange.js"></script>
+
+    </body>
+
+</html>
