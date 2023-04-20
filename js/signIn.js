@@ -40,8 +40,8 @@ async function signIn() {
             // サインインできるか確認
             if (data.result) {
                 // ローカルストレージにユーザ名、秘密の暗号を登録
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('password', password);
+                localStorage.setItem('userNamePokeBattle', userName);
+                localStorage.setItem('passwordPokeBattle', password);
                 window.location.href = './index.html';
             } else {
                 setElem("infoSignIn", data.message);
@@ -86,8 +86,8 @@ async function signUp() {
         .then(data => {
             if (data.result) {
                 // ローカルストレージにユーザ名、秘密の暗号を登録
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('password', password);
+                localStorage.setItem('userNamePokeBattle', userName);
+                localStorage.setItem('passwordPokeBattle', password);
                 setElem("infoSignUp", data.message);
             } else {
                 setElem("infoSignUp", data.message);

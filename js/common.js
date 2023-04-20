@@ -22,9 +22,9 @@ let expFrontStep;
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 // ユーザ名をローカルストレージから取得
-const userNameLocal = localStorage.getItem('userName');
+const userNameLocal = localStorage.getItem('userNamePokeBattle');
 // 秘密の暗号をローカルストレージから取得
-const passwordLocal = localStorage.getItem('password');
+const passwordLocal = localStorage.getItem('passwordPokeBattle');
 
 
 
