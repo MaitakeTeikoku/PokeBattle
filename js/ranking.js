@@ -29,7 +29,7 @@ async function ranking(data) {
     const tableList = document.getElementById("tableRankingList");
 
     for (let i = 0;  i < data.length; ++i) {
-        let [userName, pokeData, point] = data[i];
+        let [userName, pokeData, point, battleSum] = data[i];
 
         // 表の一番最後に1行追加、-1
         let tr1 = tableList.insertRow(-1);
@@ -49,6 +49,11 @@ async function ranking(data) {
         td2List.innerHTML = point;
         td2List.rowSpan = "2";
         td2List.classList.add("rankingTd2");
+        // 得点を表示
+        let td3List = tr1.insertCell(3);
+        td3List.innerHTML = battleSum;
+        td3List.rowSpan = "2";
+        td3List.classList.add("rankingTd3");
 
         // 表の一番最後に1行追加、-1
         let tr2 = tableList.insertRow(-1);
@@ -65,18 +70,18 @@ async function ranking(data) {
 
             let imgSrcBack = await getPokeImage(numDexBack, true, shinyBack, true);
 
-            let td3List;
+            let td4List;
             // 画像を表示
             if (j % 2 != 0) {
-                td3List = tr1.insertCell(3 + Math.floor(j/2));
-                td3List.classList.add("rankingTd3Odd");
+                td4List = tr1.insertCell(4 + Math.floor(j/2));
+                td4List.classList.add("rankingTd4Odd");
             } else {
-                td3List = tr2.insertCell(Math.floor(j/2));
-                td3List.classList.add("rankingTd3Even");
+                td4List = tr2.insertCell(Math.floor(j/2));
+                td4List.classList.add("rankingTd4Even");
             }
             
-            td3List.innerHTML = "<img src =" + imgSrcBack + "><br>" + valueShiny + "<b>" + statsBaseBack + "</b>" + "<br>(" + statsBack + " × " + expBack.toFixed(3) + ")";
-            td3List.classList.add("rankingTd3");
+            td4List.innerHTML = "<img src =" + imgSrcBack + "><br>" + valueShiny + "<b>" + statsBaseBack + "</b>" + "<br>(" + statsBack + " × " + expBack.toFixed(3) + ")";
+            td4List.classList.add("rankingTd4");
         }
     }
 

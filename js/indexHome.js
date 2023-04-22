@@ -59,6 +59,9 @@ async function listTable(data, id, valueSprites) {
 
     const point = data[2];
     setElem("point", point);
+    
+    const battleSum = data[3];
+    setElem("battleSum", battleSum);
 
     // テーブルを取得
     const tableList = document.getElementById(id);
