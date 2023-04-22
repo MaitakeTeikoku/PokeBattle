@@ -33,12 +33,16 @@ table td {
     border-bottom: solid 3px;
 }
 .rankingTd3 {
+    border-top: solid 3px;
+    border-bottom: solid 3px;
+}
+.rankingTd4 {
     font-size: 10px;
 }
-.rankingTd3Odd {
+.rankingTd4Odd {
     border-top: solid 3px;
 }
-.rankingTd3Even {
+.rankingTd4Even {
     border-bottom: solid 3px;
 }
 
