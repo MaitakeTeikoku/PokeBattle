@@ -1,5 +1,5 @@
 // GASのURLを指定
-const urlApi = 'https://script.google.com/macros/s/AKfycbxRt8dsY5yQi2LYM7b5wv2kHCos5ff4ZAQrQx_-BUFVmXhttYqnkXvUvGyZ76KFXjLK/exec';
+const urlApi = 'https://script.google.com/macros/s/AKfycbzDT9Zg1uQ2xjx_NL5Migo39mkeasfO5y1h_Uy-k8_SuFL0grp3l73OYtEa2efeZd0_/exec';
 
 // 設定
 let dexRange;
