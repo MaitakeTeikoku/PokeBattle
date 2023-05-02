@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+        <title>ポケバトル対戦</title>
+    </head>
+
+    <body>
+        <dev id="info"></dev>
+        <dev id="message"></dev>
+        サーバ<dev id="numServer"></dev>
+        <dev id="buttonExit">
+            <button type="button" onclick="serverExit();">サーバを退出</button>
+        </dev>
+        
+        <form id="formServerBattle" class="formServerBattle" onsubmit="serverBattleSelect(); return false;">
+            <table id="tableServerBattleList">
+                <tr>
+                    <th>ポケモン</th>
+                    <th>名前</th>
+                    <th>タイプ</th>
+                    <th>実数値</th>
+                </tr>
+            </table>
+
+            <div id="serverBattleIcons">
+                <input type="submit" id="submitServerBattle" value="決定">
+            </div>
+        </form>
+
+        
+        <script src="./js/common.js"></script>
+        <script src="./js/serverBattleSelect.js"></script>
+
+    </body>
+
+</html>
