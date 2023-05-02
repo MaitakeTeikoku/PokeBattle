@@ -54,3 +54,8 @@ table td {
 .tableChangeListTd0 img {
     width: 50px;
 }
+
+/* serverBattleStandBy.html */
+.tableServerBattleListTd0 img {
+    width: 100px;
+}
