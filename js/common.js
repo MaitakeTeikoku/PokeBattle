@@ -1,5 +1,5 @@
 // GASのURLを指定
-const urlApi = 'https://script.google.com/macros/s/AKfycbyJxFBgC8NiQgThlB1pJjLYS3caPZ9hPtudN96b3bDppwAcTZ2LP_nGoXcD0TbtDi9T/exec';
+const urlApi = 'https://script.google.com/macros/s/AKfycbyBfgRPtXFoVQAmzRHPcX7LzRdhC3nEAXCR4DE0e1sGhfQhWHQg5YVub4xgW8WTP9YR/exec';
 
 // 設定
 let dexRange;
@@ -66,7 +66,42 @@ function elemDisplay(id, d) {
     elem.style.display = d;
 }
 
+// ラジオボタンでチェックされた値を取得する関数
+function getRadioChecked(getByName) {
+    const elements = document.getElementsByName(getByName);
+    
+    let checkValue = '';
+    for (let i = 0; i < elements.length; i++){
+        if (elements.item(i).checked){
+            checkValue = elements.item(i).value;
+        }
+    }
+    return checkValue;
+}
 
+// サーバを退出する関数
+async function serverExit() {
+    // POSTのbody
+    let formData = new FormData();
+    formData.set('action', "serverExit");
+    formData.set('userName', userNameLocal);
+
+    // 設定を取得、POST
+    await fetch(urlApi, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        setElem("info", data.message);
+        location.href = "./serverHome.html";
+    })
+    .catch(error => {
+        setElem("info", error);
+    });
+}
 
 // 設定を取得
 async function getSetting() {

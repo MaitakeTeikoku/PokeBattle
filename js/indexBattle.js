@@ -42,19 +42,6 @@ async function displayBattle() {
 
 }
 
-// ラジオボタンでチェックされた値を取得する関数
-function getRadioChecked(getByName) {
-    const elements = document.getElementsByName(getByName);
-    
-    let checkValue = '';
-    for (let i = 0; i < elements.length; i++){
-        if (elements.item(i).checked){
-            checkValue = elements.item(i).value;
-        }
-    }
-    return checkValue
-}
-
 // バトル結果を表示する関数
 async function battleResult(data) {
     // 戻るボタンを表示
