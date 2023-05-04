@@ -45,7 +45,12 @@ async function serverBattle(data) {
     const imgBack = document.getElementById("imgSrcBack");
     imgBack.src = imgSrcBack;
 
-    setElem("nameBack", nameBack);
+    let valueShinyBack = "";
+    if (shinyBack) {
+        valueShinyBack = "★";
+    }
+
+    setElem("nameBack", nameBack + valueShinyBack);
     setElem("typeBack", typeSumBack);
     setElem("infoBack", infoBack);
 
@@ -56,7 +61,12 @@ async function serverBattle(data) {
     const imgFront = document.getElementById("imgSrcFront");
     imgFront.src = imgSrcFront;
 
-    setElem("nameFront", nameFront);
+    let valueShinyFront = "";
+    if (shinyFront) {
+        valueShinyFront = "★";
+    }
+
+    setElem("nameFront", nameFront + valueShinyFront);
     setElem("typeFront", typeSumFront);
     setElem("infoFront", infoFront);
 

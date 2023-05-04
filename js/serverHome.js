@@ -35,7 +35,6 @@ function serverHome(data) {
 
             // 参加しているサーバに色を付ける
             if (data.numServerOld == i + 1) {
-                button.style.backgroundColor = 'skyblue';
                 button.onclick = () => {
                     selectServer(i + 1);
                 };

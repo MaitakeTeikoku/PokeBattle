@@ -71,9 +71,9 @@ async function listTable(data, id, valueSprites) {
 
         let [shinyBack, expBack, usedBack, numDexBack, nameBack, typeSumBack, statsBack] = data[1][i];
         
-        let valueShiny = "";
+        let valueShinyBack = "";
         if (shinyBack) {
-            valueShiny = "★";
+            valueShinyBack = "★";
         }
 
         const imgSrcBack = await getPokeImage(numDexBack, valueSprites, shinyBack, true);
@@ -89,7 +89,7 @@ async function listTable(data, id, valueSprites) {
 
         // 名前と色違いを追加
         let td1List = tr.insertCell(1);
-        td1List.innerHTML = nameBack + valueShiny;
+        td1List.innerHTML = nameBack + valueShinyBack;
         td1List.classList.add(id + "Td1");
 
         // タイプを追加

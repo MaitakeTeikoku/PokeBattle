@@ -48,9 +48,9 @@ async function serverRound(data) {
 
         let [shinyBack, expBack, usedBack, numDexBack, nameBack, typeSumBack, statsBack] = data.listGetData[1][i];
         
-        let valueShiny = "";
+        let valueShinyBack = "";
         if (shinyBack) {
-            valueShiny = "★";
+            valueShinyBack = "★";
         }
 
         const imgSrcBack = await getPokeImage(numDexBack, false, shinyBack, true);
@@ -71,7 +71,7 @@ async function serverRound(data) {
 
         // 名前と色違いを追加
         let td1List = tr.insertCell(1);
-        td1List.innerHTML = nameBack + valueShiny;
+        td1List.innerHTML = nameBack + valueShinyBack;
         td1List.classList.add("tableServerBattleListTd1");
 
         // タイプを追加
