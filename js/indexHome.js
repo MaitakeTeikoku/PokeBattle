@@ -17,6 +17,8 @@ async function displayHome() {
     // ユーザ名を表示
     setElem("userName", userNameLocal);
 
+    elemDisabled("submitHome", false);
+
     // ガチャの設定を取得
     await getSetting();
     // ガチャの設定を表示
@@ -86,11 +88,11 @@ async function listTable(data, id, valueSprites) {
         // 画像を表示
         let td0List = tr.insertCell(0);
         
-        if (usedBack > 0) {
+        if (usedBack <= 0 && id == "tableHomeList") {
+            td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' disabled='disabled'><img src =" + imgSrcBack + "></label>";
+        } else {
             td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' checked><img src =" + imgSrcBack + "></label>";
             countCanUse ++;
-        } else {
-            td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' disabled='disabled'><img src =" + imgSrcBack + "></label>";
         }
         td0List.classList.add(id + "Td0");
 
