@@ -66,6 +66,7 @@ async function listTable(data, id, valueSprites) {
     // テーブルを取得
     const tableList = document.getElementById(id);
 
+    let countCanUse = 0;
     for (i = data[1].length - 1; i >= 0 ; --i) {
         let numPoke = i + 1;
 
@@ -84,7 +85,13 @@ async function listTable(data, id, valueSprites) {
 
         // 画像を表示
         let td0List = tr.insertCell(0);
-        td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' checked><img src =" + imgSrcBack + "></label>";
+        
+        if (usedBack > 0) {
+            td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' checked><img src =" + imgSrcBack + "></label>";
+            countCanUse ++;
+        } else {
+            td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' disabled='disabled'><img src =" + imgSrcBack + "></label>";
+        }
         td0List.classList.add(id + "Td0");
 
         // 名前と色違いを追加
@@ -108,6 +115,10 @@ async function listTable(data, id, valueSprites) {
         td4List.classList.add(id + "Td4");
     }
 
+    if (countCanUse <= 0) {
+        elemDisabled("submitHome", true);
+    }
+    
     // スタートボタン等を表示
     elemDisplay("homeIcons", "block");
 }
