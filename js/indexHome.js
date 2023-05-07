@@ -90,6 +90,7 @@ async function listTable(data, id, valueSprites) {
         
         if (usedBack <= 0 && id == "tableHomeList") {
             td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' disabled='disabled'><img src =" + imgSrcBack + "></label>";
+            tr.classList.add("disabledTd0");
         } else {
             td0List.innerHTML = "<label><input type='radio' name='" + id + "' value='" + numPoke +"' checked><img src =" + imgSrcBack + "></label>";
             countCanUse ++;
