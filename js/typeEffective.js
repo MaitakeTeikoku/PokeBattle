@@ -37,13 +37,9 @@ async function displayTypeEffective() {
     // ガチャの設定を取得
     await getSetting();
 
-    const pointEffectiveSuper = effectiveSuper / 1;
-    const pointEffectiveNotVery = 1 / effectiveNotVery;
-    const pointEffectiveNot = 1 / effectiveNot;
-
-    setElem("effectiveSuper", effectiveSuper + "(×" + pointEffectiveSuper + ")");
-    setElem("effectiveNotVery", effectiveNotVery + "(×" + pointEffectiveNotVery + ")");
-    setElem("effectiveNot", effectiveNot + "(×" + pointEffectiveNot + ")");
+    setElem("effectiveSuper", effectiveSuper);
+    setElem("effectiveNotVery", effectiveNotVery);
+    setElem("effectiveNot", effectiveNot);
 
     // テーブルを取得
     const tableList = document.getElementById("tableTypeEffectiveList");
@@ -73,21 +69,22 @@ async function displayTypeEffective() {
         let no_damage_from = await getTypeEffectiveList(type1Data, "no_damage_from");
         let no_damage_to = await getTypeEffectiveList(type1Data, "no_damage_to");
 
-        let point = - double_damage_from.length * pointEffectiveSuper + double_damage_to.length * pointEffectiveSuper + half_damage_from.length * pointEffectiveNotVery - half_damage_to.length * pointEffectiveNotVery + no_damage_from.length * pointEffectiveNot - no_damage_to.length * pointEffectiveNot;
-
         let typeClacList = await typeCalc(double_damage_to, half_damage_to, no_damage_to, double_damage_from, half_damage_from, no_damage_from);
 
-        let typePointSum = 1;
+        let typePointAll = 1;
+        let typePointSum = 0;
         let typeSumPointSum = 0;
         for (let k = 0; k < typeClacList.length; k++) {
             let typePoint = typeClacList[k]["typePoint"];
-            typePointSum *= parseFloat(typePoint);
+            typePointAll *= parseFloat(typePoint);
+
+            typePointSum += parseFloat(typePoint);
             
             let typeSumPoint = typeClacList[k]["typeSumPoint"];
             typeSumPointSum += parseFloat(typeSumPoint);
         }
 
-        listTypeData.push([type1Name, point, typeClacList, typePointSum.toLocaleString(undefined, {maximumFractionDigits: 3}), (typeSumPointSum / numPokeSum).toLocaleString(undefined, {maximumFractionDigits: 3})]);
+        listTypeData.push([type1Name, typeClacList, (typeSumPointSum / numPokeSum).toLocaleString(undefined, {maximumFractionDigits: 3}), (typePointSum / numTypeSum).toLocaleString(undefined, {maximumFractionDigits: 3}), typePointAll.toLocaleString(undefined, {maximumFractionDigits: 3})]);
     }
 
     // 複合タイプ
@@ -121,37 +118,39 @@ async function displayTypeEffective() {
             no_damage_from = no_damage_from.concat(await getTypeEffectiveList(type2Data, "no_damage_from"));
             no_damage_to = no_damage_to.concat(await getTypeEffectiveList(type2Data, "no_damage_to"));
 
-
-
-            point = - double_damage_from.length * pointEffectiveSuper + double_damage_to.length * pointEffectiveSuper + half_damage_from.length * pointEffectiveNotVery - half_damage_to.length * pointEffectiveNotVery + no_damage_from.length * pointEffectiveNot - no_damage_to.length * pointEffectiveNot;
-
             let typeClacList = await typeCalc(double_damage_to, half_damage_to, no_damage_to, double_damage_from, half_damage_from, no_damage_from);
             
-            let typePointSum = 1;
+            let typePointAll = 1;
+            let typePointSum = 0;
             let typeSumPointSum = 0;
             for (let k = 0; k < typeClacList.length; k++) {
                 let typePoint = typeClacList[k]["typePoint"];
-                typePointSum *= parseFloat(typePoint);
+                typePointAll *= parseFloat(typePoint);
+
+                typePointSum += parseFloat(typePoint);
                 
                 let typeSumPoint = typeClacList[k]["typeSumPoint"];
                 typeSumPointSum += parseFloat(typeSumPoint);
             }
 
-            listTypeData.push([type1Name + "/<br>" + type2Name, point, typeClacList, typePointSum.toLocaleString(undefined, {maximumFractionDigits: 3}), (typeSumPointSum / numPokeSum).toLocaleString(undefined, {maximumFractionDigits: 3})]);
+            listTypeData.push([type1Name + "/<br>" + type2Name, typeClacList, (typeSumPointSum / numPokeSum).toLocaleString(undefined, {maximumFractionDigits: 3}), (typePointSum / numTypeSum).toLocaleString(undefined, {maximumFractionDigits: 3}), typePointAll.toLocaleString(undefined, {maximumFractionDigits: 3})]);
         }
     }
 
     // データを並び替え
     listTypeData.sort(function(a,b){
-        // 得点が高い順
-        if(a[4] > b[4]) return -1;
-        if(a[4] < b[4]) return 1;
-        // 得点が高い順
+        // 匹数平均倍率が高い順
+        if(a[2] > b[2]) return -1;
+        if(a[2] < b[2]) return 1;
+        // 平均倍率が高い順
         if(a[3] > b[3]) return -1;
         if(a[3] < b[3]) return 1;
-        // 得点が高い順
-        if(a[1] > b[1]) return -1;
-        if(a[1] < b[1]) return 1;
+        // 全倍率が高い順
+        if(a[4] > b[4]) return -1;
+        if(a[4] < b[4]) return 1;
+        // 名前順
+        if(a[0] > b[0]) return -1;
+        if(a[0] < b[0]) return 1;
         return 0;
     });
 
@@ -164,32 +163,28 @@ async function displayTypeEffective() {
         td1List.innerHTML = listTypeData[i][0];
         td1List.classList.add("typeEffectiveTd1");
 
-        // 平均倍率を表示
+        // 匹数平均倍率を表示
         let td2List = tr.insertCell(1);
-        td2List.innerHTML = "<b>×" + listTypeData[i][4] + "</b>";
+        td2List.innerHTML = "<b>×" + listTypeData[i][2] + "</b>";
         td2List.classList.add("typeEffectiveTd2");
 
-        // 得点を表示
+        // 平均倍率を表示
         let td3List = tr.insertCell(2);
         td3List.innerHTML = "×" + listTypeData[i][3];
         td3List.classList.add("typeEffectiveTd3");
 
-        // 得点を表示
+        // 全倍率を表示
         let td4List = tr.insertCell(3);
-        let pointValue = listTypeData[i][1];
-        if (listTypeData[i][1] > 0) {
-            pointValue = "+" + listTypeData[i][1];
-        }
-        td4List.innerHTML = pointValue;
+        td4List.innerHTML = listTypeData[i][4];
         td4List.classList.add("typeEffectiveTd4");
         
         // 個別得点を表示
-        for (let j = 0; j < listTypeData[i][2].length; j++) {
-            let typePoint = listTypeData[i][2][j]["typePoint"];
+        for (let j = 0; j < listTypeData[i][1].length; j++) {
+            let typePoint = listTypeData[i][1][j]["typePoint"];
 
             // 得点を表示
             let td5List = tr.insertCell(-1);
-            td5List.innerHTML = "<b>×" + typePoint + "</b><br>(" + listTypeData[i][2][j]["damage_to"] + "/" + listTypeData[i][2][j]["damage_from"] + ")<br>[" + listTypeData[i][2][j]["typeSumPoint"].toLocaleString(undefined, {maximumFractionDigits: 3}) + "]";
+            td5List.innerHTML = "<b>×" + typePoint + "</b><br>(" + listTypeData[i][1][j]["damage_to"] + "/" + listTypeData[i][1][j]["damage_from"] + ")<br>[" + listTypeData[i][1][j]["typeSumPoint"].toLocaleString(undefined, {maximumFractionDigits: 3}) + "]";
             td5List.classList.add("typeEffectiveTd5");
 
             if (typePoint >= 10) {
