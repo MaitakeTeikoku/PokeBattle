@@ -39,11 +39,14 @@ table td {
 .rankingTd4 {
     font-size: 10px;
 }
+.rankingTd4 img {
+    width: 100px;
+}
 .rankingTd4Odd {
-    border-top: solid 3px;
+    border-bottom: solid 3px;
 }
 .rankingTd4Even {
-    border-bottom: solid 3px;
+    border-top: solid 3px;
 }
 
 /* index.html */
