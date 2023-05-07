@@ -53,6 +53,12 @@ table td {
 .tableHomeListTd0 img {
     width: 100px;
 }
+.disabledTd0 {
+    background-color: #cfcfcf;
+}
+.disabledTd0 img{
+    filter: brightness(70%);
+}
 
 .tableChangeListTd0 img {
     width: 50px;
