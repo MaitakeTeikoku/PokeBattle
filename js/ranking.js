@@ -73,10 +73,10 @@ async function ranking(data) {
             let td4List;
             // 画像を表示
             if (j % 2 != 0) {
-                td4List = tr1.insertCell(4 + Math.floor(j/2));
+                td4List = tr2.insertCell(Math.floor(j/2));
                 td4List.classList.add("rankingTd4Odd");
             } else {
-                td4List = tr2.insertCell(Math.floor(j/2));
+                td4List = tr1.insertCell(4 + Math.floor(j/2));
                 td4List.classList.add("rankingTd4Even");
             }
             
