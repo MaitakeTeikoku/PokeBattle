@@ -74,7 +74,7 @@ function drawChart() {
             title: listUserName[i],
             legend: {
                 position: 'top',
-                textStyle: {fontSize:10}
+                textStyle: {fontSize:15}
             },
             vAxis: {
                 title: '経験値',
