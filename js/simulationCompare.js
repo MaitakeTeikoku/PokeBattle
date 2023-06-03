@@ -35,7 +35,7 @@ async function displaySimulation() {
     let simulationIcons = "";
     let simulationImages = "";
     for (let i = 1;  i <= numPokeSum; ++i) {
-        simulationIcons += '<label>ポケモン'+i+'：　図鑑番号<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input></label><p></p>'
+        simulationIcons += '<label>ポケモン'+i+'：　図鑑番号<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" value="1" size="6em" required></input></label><p></p>'
         simulationImages += '<img id="imgSrcBack'+i+'" class="simulationImage"><p></p><dev id="pokeName'+i+'" class="simulationPoke"></dev><br>勝率：<dev id="rateWin'+i+'"></dev>%<br>最終経験値平均：<dev id="expBackAvr'+i+'"></dev><br>最終実数値平均：<dev id="statsAvr'+i+'"></dev><p></p><dev id="pokeType'+i+'" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType'+i+'"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr'+i+'"></dev><p></p>'
     }
     
@@ -50,6 +50,20 @@ async function simulationStart() {
     dataTitle = ["バトル数"];
     dataChartSum = [[0]];
 
+    // 入力チェック
+    for (let i = 1;  i <= numPokeSum; ++i) {
+        let numDexBack = Number(document.getElementById("numDexBack" + i).value);
+        let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
+
+        if (numDexBack < 1 || numDexBack > dexRange) {
+            setElem("info", "ポケモン" + i + "の図鑑番号の値が不正です。");
+            return false;
+        } else if (expBackDefault < expBackMin || expBackDefault > expBackMax) {
+            setElem("info", "ポケモン" + i + "の初期経験値の値が不正です。");
+            return false;
+        }
+    }
+
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
     const valueExpFront = Number(document.getElementById("sliderExpFront").value);
@@ -57,8 +71,10 @@ async function simulationStart() {
     for (let i = 1;  i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
         let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
+
         await simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, i);
     }
+
     dataChartSum.unshift(dataTitle);
     
     // name:visualization(可視化),version:バージョン(1),packages:パッケージ(corechart)
@@ -71,13 +87,6 @@ async function simulationStart() {
 
 async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, numPoke) {
     setElem("info", "");
-    if (numDexBack < 1 || numDexBack > dexRange) {
-        setElem("info", "ポケモンの図鑑番号の値が不正です。");
-        return;
-    }else if (expBackDefault < expBackMin || expBackDefault > expBackMax) {
-        setElem("info", "初期経験値の値が不正です。");
-        return;
-    }
     
     const battleSum = numBattle * repeat;
 
@@ -159,6 +168,8 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     setElem("rateWinType" + numPoke, rateWinType);
     const typeEffectiveAvr = floorDecimal(typeEffectiveSum / battleSum, 3);
     setElem("typeEffectiveAvr" + numPoke, typeEffectiveAvr);
+
+    return true;
 }
 
 // グラフの描画   
