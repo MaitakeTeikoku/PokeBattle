@@ -98,7 +98,10 @@ table td {
     font-weight: bold;
 }
 
-
 .discription {
     font-size: 10px;
+}
+
+.urlPath {
+    width: 100%;
 }
