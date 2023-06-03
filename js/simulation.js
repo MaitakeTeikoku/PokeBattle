@@ -91,6 +91,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     progress.max = battleSum;
     progress.value = 0;
     let progressValue = 0;
+    setElem("progressDisplay", progressValue + "/" + battleSum);
 
     // 手持ちのポケモン表示
     const imgSrcBack = await getPokeImage(numDexBack, false, false, true);
@@ -141,8 +142,6 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
             } else {
                 dataChart[j+1].push(expBack);
             }
-            
-            
 
             if (j == numBattle) {
                 expBackSum += expBack;
@@ -160,6 +159,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
 
             progressValue ++;
             progress.value = progressValue;
+            setElem("progressDisplay", progressValue + "/" + battleSum);
         }
     }
     
