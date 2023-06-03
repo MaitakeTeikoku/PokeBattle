@@ -1,4 +1,3 @@
-let infoBack;
 let numPokeSum;
 var dataChart;
 var dataTitle;
@@ -36,8 +35,8 @@ async function displaySimulation() {
     let simulationIcons = "";
     let simulationImages = "";
     for (let i = 1;  i <= numPokeSum; ++i) {
-        simulationIcons += '<label>ポケモン'+i+'の図鑑番号：<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input></label><p></p><label>ポケモン'+i+'の初期経験値：<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input></label><p></p>'
-        simulationImages += i+'<img id="imgSrcBack'+i+'" class="simulationImage"><p></p><dev id="pokeName'+i+'" class="simulationPoke"></dev><br>勝率：<dev id="rateWin'+i+'"></dev>%<br>最終経験値平均：<dev id="expBackAvr'+i+'"></dev><br>最終実数値平均：<dev id="statsAvr'+i+'"></dev><p></p><dev id="pokeType'+i+'" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType'+i+'"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr'+i+'"></dev><p></p>'
+        simulationIcons += '<label>ポケモン'+i+'：　図鑑番号<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input></label><p></p>'
+        simulationImages += '<img id="imgSrcBack'+i+'" class="simulationImage"><p></p><dev id="pokeName'+i+'" class="simulationPoke"></dev><br>勝率：<dev id="rateWin'+i+'"></dev>%<br>最終経験値平均：<dev id="expBackAvr'+i+'"></dev><br>最終実数値平均：<dev id="statsAvr'+i+'"></dev><p></p><dev id="pokeType'+i+'" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType'+i+'"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr'+i+'"></dev><p></p>'
     }
     
     document.getElementById("simulationIcons").innerHTML = simulationIcons;
@@ -89,12 +88,11 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
 
     // 名前取得
     const pokeBack = getPoke(numDexBack);
-    infoBack = pokeBack["name"] + "(" + pokeBack["typesName"] + ")";
-    setElem("pokeName" + numPoke, "【" + pokeBack["name"] + "】");
+    setElem("pokeName" + numPoke, "【" + numPoke + ": " + pokeBack["name"] + "】");
     setElem("pokeType" + numPoke, "【" + pokeBack["typesName"] + "】");
     const stats = pokeBack["stats"];
 
-    dataTitle.push(pokeBack["name"]);
+    dataTitle.push(numPoke + ": " + pokeBack["name"]);
     dataChartSum[0].push(expBackDefault * pokeBack["stats"]);
 
     let win = 0;
@@ -170,7 +168,7 @@ function drawChart() {
 
     // オプションの設定
     const options = {
-        title: infoBack,
+        title: "実数値推移比較",
         legend: {
             position: 'top',
             textStyle: {fontSize:15}
