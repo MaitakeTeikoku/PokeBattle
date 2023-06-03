@@ -1,5 +1,5 @@
 // GASのURLを指定
-const urlApi = 'https://script.google.com/macros/s/AKfycbxHqfYskzKqd2Lr5rfOrklO-5k-2EXhhF-W7BYK3CozqX_Ozifqh3qfDS16sxOGkwG_/exec';
+const urlApi = 'https://script.google.com/macros/s/AKfycbzunitnO5yEXZXnXqI1Mt4mspXsaSta0GRCftnbcpn01pwz_wmT52TXsdn6gOL75LRK/exec';
 
 // 設定
 let dexRange;
@@ -127,8 +127,8 @@ async function getSetting() {
         pointShiny = data.pointShiny;
         numUsedMax = data.numUsedMax;
         getPokeMax = data.getPokeMax;
-        expBackMin = expBackMin;
-        expBackMax = expBackMax;
+        expBackMin = data.expBackMin;
+        expBackMax = data.expBackMax;
         expFrontMin = data.expFrontMin;
         expFrontMax = data.expFrontMax;
         expFrontStep = data.expFrontStep;
