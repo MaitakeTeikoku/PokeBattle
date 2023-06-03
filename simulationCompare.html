@@ -11,6 +11,11 @@
     <body>
         <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
         <p></p>
+
+        <dev class="discription">
+            ＊URLに以下のようなパラメータを付けて比較するポケモンの数を変更することもできます。<br>
+            <textarea id="urlPath" class="urlPath"></textarea>
+        </dev>
         
         <dev id="info"></dev>
         <p></p>
@@ -20,25 +25,7 @@
         <p></p>
 
         <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
-            <div id="simulationIcons">
-
-                <label>ポケモン1の図鑑番号：
-                    <input type="text" id="numDexBack1" name="numDexBack1" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input>
-                </label>
-                <p></p>
-                <label>ポケモン1の初期経験値：
-                    <input type="text" id="expBackDefault1" name="expBackDefault1" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
-                </label>
-                <p></p>
-
-                <label>ポケモン2の図鑑番号：
-                    <input type="text" id="numDexBack2" name="numDexBack2" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input>
-                </label>
-                <p></p>
-                <label>ポケモン2の初期経験値：
-                    <input type="text" id="expBackDefault2" name="expBackDefault2" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
-                </label>
-                <p></p>
+            <div id="simulationIcons"></div>
 
                 <label>バトル回数：
                     <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="3em" required></input>
@@ -56,33 +43,9 @@
                 <p></p>
 
                 <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
-                
-            </div>
         </form>
 
-        <img id="imgSrcBack1" class="simulationImage">
-        <p></p>
-        <dev id="pokeName1" class="simulationPoke"></dev>
-        <br>勝率：<dev id="rateWin1"></dev>%
-        <br>最終経験値平均：<dev id="expBackAvr1"></dev>
-        <br>最終実数値平均：<dev id="statsAvr1"></dev>
-        <p></p>
-        <dev id="pokeType1" class="simulationPoke"></dev>
-        <br>タイプ勝率：<dev id="rateWinType1"></dev>%
-        <br>タイプ平均倍率：×<dev id="typeEffectiveAvr1"></dev>
-        <p></p>
-
-        <img id="imgSrcBack2" class="simulationImage">
-        <p></p>
-        <dev id="pokeName2" class="simulationPoke"></dev>
-        <br>勝率：<dev id="rateWin2"></dev>%
-        <br>最終経験値平均：<dev id="expBackAvr2"></dev>
-        <br>最終実数値平均：<dev id="statsAvr2"></dev>
-        <p></p>
-        <dev id="pokeType2" class="simulationPoke"></dev>
-        <br>タイプ勝率：<dev id="rateWinType2"></dev>%
-        <br>タイプ平均倍率：×<dev id="typeEffectiveAvr2"></dev>
-        <p></p>
+        <div id="simulationImages"></div>
         
         <div id="chart" style="width: 1280px; height: 720px;"></div>
 
