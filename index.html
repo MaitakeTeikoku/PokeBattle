@@ -22,12 +22,20 @@
             <br>こうかなしの倍率：<dev id="effectiveNot"></dev>
             <br>野生の色違いの確率：<dev id="countShinyRandom"></dev>
             <br>色違いの得点倍率：×<dev id="pointShiny"></dev>
-            
-            <br>ユーザ名：<dev id="userName"></dev>
-            <br>得点：<div id="point"></div>
-            <br>バトル数：<div id="battleSum"></div>
+            <p></p>
+            ユーザ名：<dev id="userName"></dev>
+            <br>得点：<span id="point"></span>
+            <br>バトル数：<span id="battleSum"></span>
+            <p></p>
 
             <form id="formHome" class="formHome" onsubmit="displayBattle(); return false;">
+                <div id="homeIcons">
+                    <input type="submit" id="submitHome" value="バトルスタート">
+
+                    <label>野生の経験値：<span id="valueExpFront"></span>
+                    <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
+                    </label>
+                </div>
 
                 <table id="tableHomeList">
                     <tr>
@@ -38,14 +46,6 @@
                         <th>消費ライフ</th>
                     </tr>
                 </table>
-
-                <div id="homeIcons">
-                    <label>野生の経験値：<div id="valueExpFront"></div>
-                    <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
-                    </label>
-
-                    <input type="submit" id="submitHome" value="バトルスタート">
-                </div>
             </form>
         </div>
 
@@ -83,10 +83,11 @@
             <div id="message"></div>
         </div>
 
-
+        <button type="button" id="backButton" onclick="location.reload();">戻る</button>
 
         <div id="change">
             <form id="formChange" class="formChange" onsubmit="change(); return false;">
+                
                 <table id="tableChangeList">
                     <tr>
                         <th>ポケモン</th>
@@ -96,19 +97,12 @@
                         <th>消費ライフ</th>
                     </tr>
                 </table>
-                
+
                 <dev id="changeIcons">
                     <input type="submit" id="submitChange" value="交代">
                 </dev>
             </form>
-            
         </div>
-
-
-
-        <button type="button" id="backButton" onclick="location.reload();">戻る</button>
-        
-
         
         <script src="./js/common.js"></script>
         <script src="./js/indexHome.js"></script>

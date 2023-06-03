@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css">
+        <title>ポケバトル</title>
+    </head>
+
+    <body>
+        <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
+        <p></p>
+
+        <dev class="discription">
+            ＊URLに以下のようなパラメータを付けて実行することもできます。<br>
+            <span id="pathname"></span>?numDexBack=1&expBackDefault=1&numBattle=100&repeat=10&valueExpFront=1
+        </dev>
+        <p></p>
+        
+        <dev id="info"></dev>
+        <p></p>
+
+        <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
+            <div id="simulationIcons">
+
+                <label>ポケモンの図鑑番号(1～<dev id="dexRange"></dev>)：
+                    <input type="text" id="numDexBack" name="numDexBack" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input>
+                </label>
+                <p></p>
+
+                <label>初期経験値(範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>)：
+                    <input type="text" id="expBackDefault" name="expBackDefault" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
+                </label>
+                <p></p>
+
+                <label>バトル回数：
+                    <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="3em" required></input>
+                </label>
+                <p></p>
+
+                <label>繰り返し：
+                    <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="10" size="3em" required></input>
+                </label>
+                <p></p>
+
+                <label>野生の経験値：<span id="valueExpFront"></span>
+                    <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
+                </label>
+                <p></p>
+
+                <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
+                
+            </div>
+        </form>
+        <progress id="progress" min="0" value="0"></progress>
+        <p></p>
+        <img id="imgSrcBack" class="simulationImage">
+        <p></p>
+
+        <dev id="pokeName" class="simulationPoke"></dev>
+        <br>勝ち：<dev id="win"></dev>
+        <br>引き分け：<dev id="draw"></dev>
+        <br>負け：<dev id="lose"></dev>
+        <br>勝率：<dev id="rateWin"></dev>%
+        <br>最終経験値平均：<dev id="expBackAvr"></dev>
+        <p></p>
+
+        <dev id="pokeType" class="simulationPoke"></dev>
+        <br>タイプ勝ち：<dev id="winType"></dev>
+        <br>タイプ引き分け：<dev id="drawType"></dev>
+        <br>タイプ負け：<dev id="loseType"></dev>
+        <br>タイプ勝率：<dev id="rateWinType"></dev>%
+        <br>タイプ平均倍率：×<dev id="typeEffectiveAvr"></dev>
+        <p></p>
+        
+        <div id="chart" style="width: 1280px; height: 720px;"></div>
+
+
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="./js/common.js"></script>
+        <script src="./js/GAS-util.js"></script>
+        <script src="./js/GAS-dataType.js"></script>
+        <script src="./js/GAS-dataPoke.js"></script>
+        <script src="./js/GAS-battle.js"></script>
+        <script src="./js/indexSlider.js"></script>
+        <script src="./js/simulation.js"></script>
+    </body>
+
+</html>
