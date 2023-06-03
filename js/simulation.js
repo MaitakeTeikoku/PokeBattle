@@ -103,6 +103,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     infoBack = pokeBack["name"] + "(" + pokeBack["typesName"] + ")";
     setElem("pokeName", "【" + pokeBack["name"] + "】");
     setElem("pokeType", "【" + pokeBack["typesName"] + "】");
+    const stats = pokeBack["stats"];
 
     let win = 0;
     let draw = 0;
@@ -175,6 +176,8 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     setElem("rateWin", rateWin);
     const expBackAvr = floorDecimal(expBackSum / repeat, 3);
     setElem("expBackAvr", expBackAvr);
+    const statsAvr = Math.floor(expBackAvr * stats);
+    setElem("statsAvr", statsAvr);
 
     setElem("winType", winType);
     setElem("drawType", drawType);
