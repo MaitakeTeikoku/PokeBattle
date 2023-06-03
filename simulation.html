@@ -24,12 +24,12 @@
         <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
             <div id="simulationIcons">
 
-                <label>ポケモンの図鑑番号(1～<dev id="dexRange"></dev>)：
+                <label>図鑑番号(1～<dev id="dexRange"></dev>)：
                     <input type="text" id="numDexBack" name="numDexBack" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input>
                 </label>
                 <p></p>
 
-                <label>ポケモンの初期経験値(範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>)：
+                <label>初期経験値(範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>)：
                     <input type="text" id="expBackDefault" name="expBackDefault" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
                 </label>
                 <p></p>
