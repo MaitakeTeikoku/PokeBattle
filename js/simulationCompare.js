@@ -1,7 +1,9 @@
 let infoBack;
+let numPokeSum;
 var dataChart;
 var dataTitle;
 var dataChartSum;
+
 
 
 
@@ -17,6 +19,29 @@ async function displaySimulation() {
     sliderExpFront.max = expFrontMax;
     sliderExpFront.step = expFrontStep;
     sliderExpFront.value = 1;
+
+    // URLを取得
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    setElem("urlPath", url.protocol + url.host + url.pathname + "?numPoke=2");
+
+    numPoke = params.get("numPoke");
+    if (numPoke != null && numPoke > 1) {
+        numPokeSum = Math.floor(Number(numPoke));
+    } else {
+        numPokeSum = 2;
+    }
+
+    let simulationIcons = "";
+    let simulationImages = "";
+    for (let i = 1;  i <= numPokeSum; ++i) {
+        simulationIcons += '<label>ポケモン'+i+'の図鑑番号：<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" pattern="^[1-9][0-9]*$" value="1" size="4em" required></input></label><p></p><label>ポケモン'+i+'の初期経験値：<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input></label><p></p>'
+        simulationImages += i+'<img id="imgSrcBack'+i+'" class="simulationImage"><p></p><dev id="pokeName'+i+'" class="simulationPoke"></dev><br>勝率：<dev id="rateWin'+i+'"></dev>%<br>最終経験値平均：<dev id="expBackAvr'+i+'"></dev><br>最終実数値平均：<dev id="statsAvr'+i+'"></dev><p></p><dev id="pokeType'+i+'" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType'+i+'"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr'+i+'"></dev><p></p>'
+    }
+    
+    document.getElementById("simulationIcons").innerHTML = simulationIcons;
+    document.getElementById("simulationImages").innerHTML = simulationImages;
     
     elemDisabled("submitSimulation", false);
 }
@@ -26,20 +51,16 @@ async function simulationStart() {
     dataTitle = ["バトル数"];
     dataChartSum = [[0]];
 
-    const numDexBack1 = Number(document.getElementById("numDexBack1").value);
-    const expBackDefault1 = Number(document.getElementById("expBackDefault1").value);
-    const numDexBack2 = Number(document.getElementById("numDexBack2").value);
-    const expBackDefault2 = Number(document.getElementById("expBackDefault2").value);
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
     const valueExpFront = Number(document.getElementById("sliderExpFront").value);
 
-    await simulation(numDexBack1, expBackDefault1, numBattle, repeat, valueExpFront, 1);
-
-    await simulation(numDexBack2, expBackDefault2, numBattle, repeat, valueExpFront, 2);
-
+    for (let i = 1;  i <= numPokeSum; ++i) {
+        let numDexBack = Number(document.getElementById("numDexBack" + i).value);
+        let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
+        await simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, i);
+    }
     dataChartSum.unshift(dataTitle);
-    console.log(dataChartSum)
     
     // name:visualization(可視化),version:バージョン(1),packages:パッケージ(corechart)
     google.load('visualization', '1', {'packages':['corechart']});       
@@ -114,7 +135,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
             typeEffectiveSum += typeEffective;
         }
     }
-    console.log(dataChart);
+
     let data = [];
     for (let i = 0;  i < dataChart.length; ++i) {
         let dataSum = 0;
@@ -124,8 +145,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
         dataSum /= repeat;
         data.push(dataSum);
     }
-    console.log(data);
-    console.log(dataChartSum);
+
     for (let i = 0;  i < data.length; ++i) {
         dataChartSum[i+1].push(data[i] * stats);
     }
