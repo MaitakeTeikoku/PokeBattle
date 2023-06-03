@@ -88,3 +88,17 @@ table td {
 .typeEffectiveTd5 {
     font-size: 10px;
 }
+
+/* simulation.html */
+.simulationImage {
+    width: 120px;
+}
+
+.simulationPoke {
+    font-weight: bold;
+}
+
+
+.discription {
+    font-size: 10px;
+}
