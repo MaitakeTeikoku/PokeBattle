@@ -20,7 +20,7 @@ async function displaySimulation() {
     const url = new URL(window.location.href);
     const params = url.searchParams;
 
-    setElem("pathname", url.pathname);
+    setElem("pathname", url.protocol + url.host + url.pathname);
 
     let numDexBack = params.get("numDexBack");
     let expBackDefault = params.get("expBackDefault");
