@@ -2,7 +2,7 @@ var dataChart;
 var dataTitle;
 var dataChartStatsBase;
 var dataChartExp;
-var dataAll = [];
+var dataAll;
 
 
 
@@ -23,12 +23,13 @@ async function simulationStart() {
     dataTitle = ["バトル数"];
     dataChartStatsBase = [[0]];
     dataChartExp = [[0]];
+    dataAll = [];
 
     const expBackDefault = Number(document.getElementById("expBackDefault").value);
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
     const expFront = Number(document.getElementById("expFront").value);
-
+    
     for (let i = 1; i <= dexRange; ++i) {
         await simulation(i, expBackDefault, numBattle, repeat, expFront, i);
     }
@@ -55,9 +56,7 @@ async function simulationStart() {
     setElem("info", "読み込み完了！");
 }
 
-async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, numPoke) {
-    setElem("info", "");
-
+async function simulation(numDexBack, expBackDefault, numBattle, repeat, expFront, numPoke) {
     const battleSum = numBattle * repeat;
 
     // 名前取得
@@ -83,7 +82,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
                 dataChartExp.push([j]);
             }
 
-            let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, valueExpFront);
+            let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, expFront);
             if (infoBattle >= 0) {
                 win++;
             }
