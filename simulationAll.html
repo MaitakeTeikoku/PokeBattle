@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./css/style.css">
+        <link rel="stylesheet" href="./css/sort.css">
         <title>ポケバトル</title>
     </head>
 
@@ -37,20 +38,17 @@
 
             <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
         </form>
-        
-        <div id="chartStatsBase" style="width: 1280px; height: 720px;"></div>
-        <div id="chartExp" style="width: 1280px; height: 720px;"></div>
 
-        <table id="tableSimulationAll">
+        <table id="sampleTable">
             <tr>
-                <th>順位</th>
-                <th>名前</th>
-                <th>最終実数値平均</th>
-                <th>最終経験値平均</th>
-                <th>勝率</th>
-                <th>タイプ</th>
-                <th>タイプ平均倍率</th>
-                <th>タイプ勝率</th>
+                <th cmanSortBtn>順位</th>
+                <th cmanSortBtn>名前</th>
+                <th cmanSortBtn>最終実数値平均</th>
+                <th cmanSortBtn>最終経験値平均</th>
+                <th cmanSortBtn>勝率</th>
+                <th cmanSortBtn>タイプ</th>
+                <th cmanSortBtn>タイプ平均倍率</th>
+                <th cmanSortBtn>タイプ勝率</th>
             </tr>
         </table>
 
@@ -61,6 +59,7 @@
         <script src="./js/GAS-dataPoke.js"></script>
         <script src="./js/GAS-battle.js"></script>
         <script src="./js/simulationAll.js"></script>
+        <script src="./js/sort.js"></script>
     </body>
 
 </html>
