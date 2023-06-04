@@ -221,6 +221,18 @@ function drawChart() {
     chart.draw(dataSrc, options);
 }
 
+function urlPath() {
+    const text = document.getElementById("urlPath").value;
+    try {
+        const url = new URL(text);
+        // テキストがURL形式の場合、リンク先を開く
+        window.open(url.href, "_blank");
+    } catch (error) {
+        // テキストがURL形式でない場合、エラーメッセージを表示
+        alert("入力されたテキストはURLではありません。");
+    }
+}
+
 
 
 displaySimulation();

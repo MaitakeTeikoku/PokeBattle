@@ -1,7 +1,8 @@
 let numPokeSum;
 var dataChart;
 var dataTitle;
-var dataChartSum;
+var dataChartStatsBase;
+var dataChartExp;
 
 
 
@@ -34,24 +35,25 @@ async function displaySimulation() {
 
     let simulationIcons = "";
     let simulationImages = "";
-    for (let i = 1;  i <= numPokeSum; ++i) {
-        simulationIcons += '<label>ポケモン'+i+'：　図鑑番号<input type="text" id="numDexBack'+i+'" name="numDexBack'+i+'" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault'+i+'" name="expBackDefault'+i+'" value="1" size="6em" required></input></label><p></p>'
-        simulationImages += '<img id="imgSrcBack'+i+'" class="simulationImage"><p></p><dev id="pokeName'+i+'" class="simulationPoke"></dev><br>勝率：<dev id="rateWin'+i+'"></dev>%<br>最終経験値平均：<dev id="expBackAvr'+i+'"></dev><br>最終実数値平均：<dev id="statsAvr'+i+'"></dev><p></p><dev id="pokeType'+i+'" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType'+i+'"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr'+i+'"></dev><p></p>'
+    for (let i = 1; i <= numPokeSum; ++i) {
+        simulationIcons += '<label>ポケモン' + i + '：　図鑑番号<input type="text" id="numDexBack' + i + '" name="numDexBack' + i + '" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault' + i + '" name="expBackDefault' + i + '" value="1" size="6em" required></input></label><p></p>'
+        simulationImages += '<img id="imgSrcBack' + i + '" class="simulationImage"><p></p><dev id="pokeName' + i + '" class="simulationPoke"></dev><br>勝率：<dev id="rateWin' + i + '"></dev>%<br>最終経験値平均：<dev id="expBackAvr' + i + '"></dev><br>最終実数値平均：<dev id="statsAvr' + i + '"></dev><p></p><dev id="pokeType' + i + '" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType' + i + '"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr' + i + '"></dev><p></p>'
     }
-    
+
     document.getElementById("simulationIcons").innerHTML = simulationIcons;
     document.getElementById("simulationImages").innerHTML = simulationImages;
-    
+
     elemDisabled("submitSimulation", false);
 }
 
 async function simulationStart() {
     dataChart;
     dataTitle = ["バトル数"];
-    dataChartSum = [[0]];
+    dataChartStatsBase = [[0]];
+    dataChartExp = [[0]];
 
     // 入力チェック
-    for (let i = 1;  i <= numPokeSum; ++i) {
+    for (let i = 1; i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
         let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
 
@@ -68,26 +70,27 @@ async function simulationStart() {
     const repeat = Number(document.getElementById("repeat").value);
     const valueExpFront = Number(document.getElementById("sliderExpFront").value);
 
-    for (let i = 1;  i <= numPokeSum; ++i) {
+    for (let i = 1; i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
         let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
 
         await simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, i);
     }
 
-    dataChartSum.unshift(dataTitle);
-    
+    dataChartStatsBase.unshift(dataTitle);
+    dataChartExp.unshift(dataTitle);
+
     // name:visualization(可視化),version:バージョン(1),packages:パッケージ(corechart)
-    google.load('visualization', '1', {'packages':['corechart']});       
+    google.load('visualization', '1', { 'packages': ['corechart'] });
     // グラフを描画する為のコールバック関数を指定
     google.setOnLoadCallback(drawChart);
-    
+
     setElem("info", "読み込み完了！");
 }
 
 async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront, numPoke) {
     setElem("info", "");
-    
+
     const battleSum = numBattle * repeat;
 
     // 手持ちのポケモン表示
@@ -102,7 +105,8 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     const stats = pokeBack["stats"];
 
     dataTitle.push(numPoke + ": " + pokeBack["name"]);
-    dataChartSum[0].push(expBackDefault * pokeBack["stats"]);
+    dataChartStatsBase[0].push(expBackDefault * pokeBack["stats"]);
+    dataChartExp[0].push(expBackDefault);
 
     let win = 0;
     let expBackSum = 0;
@@ -110,25 +114,26 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     let winType = 0;
     dataChart = [];
 
-    for (let i = 1;  i <= repeat; ++i) {
+    for (let i = 1; i <= repeat; ++i) {
         let expBack = expBackDefault;
-               
-        for (let j = 1;  j <= numBattle; ++j) {
+
+        for (let j = 1; j <= numBattle; ++j) {
             if (numPoke == 1 && i == 1) {
-                dataChartSum.push([j]);
+                dataChartStatsBase.push([j]);
+                dataChartExp.push([j]);
             }
 
             let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, valueExpFront);
             if (infoBattle >= 0) {
-                win ++;
+                win++;
             }
-            
+
             expBack = expBackUpdate;
-            
+
             if (i == 1) {
-                dataChart.push([expBack]);
+                dataChart.push(expBack);
             } else {
-                dataChart[j-1].push(expBack);
+                dataChart.splice(j - 1, 1, Number(dataChart[j - 1]) + expBack);
             }
 
             if (j == numBattle) {
@@ -136,25 +141,17 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
             }
 
             if (typeEffective >= 1) {
-                winType ++;
+                winType++;
             }
 
             typeEffectiveSum += typeEffective;
         }
     }
 
-    let data = [];
-    for (let i = 0;  i < dataChart.length; ++i) {
-        let dataSum = 0;
-        for (let j = 0;  j < dataChart[i].length; ++j) {
-            dataSum += dataChart[i][j];
-        }
-        dataSum /= repeat;
-        data.push(dataSum);
-    }
-
-    for (let i = 0;  i < data.length; ++i) {
-        dataChartSum[i+1].push(data[i] * stats);
+    for (let i = 0; i < dataChart.length; ++i) {
+        dataChart.splice(i, 1, Number(dataChart[i]) / repeat);
+        dataChartStatsBase[i + 1].push(dataChart[i] * stats);
+        dataChartExp[i + 1].push(dataChart[i]);
     }
 
     const rateWin = floorDecimal(((win) / battleSum) * 100, 3);
@@ -175,31 +172,71 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
 // グラフの描画   
 function drawChart() {
     // 配列からデータの生成
-    const dataSrc = google.visualization.arrayToDataTable(dataChartSum);
+    const dataSrcStatsBase = google.visualization.arrayToDataTable(dataChartStatsBase);
 
     // オプションの設定
-    const options = {
+    const optionsStatsBase = {
         title: "実数値推移比較",
         legend: {
             position: 'top',
-            textStyle: {fontSize:15}
+            textStyle: { fontSize: 15 }
         },
         vAxis: {
             title: '実数値',
-            minValue:0,
+            minValue: 0,
         },
         hAxis: {
             title: 'バトル数',
-            minValue:0,
+            minValue: 0,
             format: "####",
         }
-    };     
-            
+    };
+
     // 指定されたIDの要素に折れ線グラフを作成
-    const chart = new google.visualization.LineChart(document.getElementById("chart"));
-    
+    const chartStatsBase = new google.visualization.LineChart(document.getElementById("chartStatsBase"));
+
     // グラフの描画
-    chart.draw(dataSrc, options);
+    chartStatsBase.draw(dataSrcStatsBase, optionsStatsBase);
+
+    // 配列からデータの生成
+    const dataSrcExp = google.visualization.arrayToDataTable(dataChartExp);
+
+    // オプションの設定
+    const optionsExp = {
+        title: "経験値推移比較",
+        legend: {
+            position: 'top',
+            textStyle: { fontSize: 15 }
+        },
+        vAxis: {
+            title: '経験値',
+            minValue: 0,
+            maxValue: 10
+        },
+        hAxis: {
+            title: 'バトル数',
+            minValue: 0,
+            format: "####",
+        }
+    };
+
+    // 指定されたIDの要素に折れ線グラフを作成
+    const chartExp = new google.visualization.LineChart(document.getElementById("chartExp"));
+
+    // グラフの描画
+    chartExp.draw(dataSrcExp, optionsExp);
+}
+
+function urlPath() {
+    const text = document.getElementById("urlPath").value;
+    try {
+        const url = new URL(text);
+        // テキストがURL形式の場合、リンク先を開く
+        window.open(url.href, "_blank");
+    } catch (error) {
+        // テキストがURL形式でない場合、エラーメッセージを表示
+        alert("入力されたテキストはURLではありません。");
+    }
 }
 
 
