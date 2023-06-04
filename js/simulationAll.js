@@ -36,11 +36,6 @@ async function simulationStart() {
     dataChartStatsBase.unshift(dataTitle);
     dataChartExp.unshift(dataTitle);
 
-    // name:visualization(可視化),version:バージョン(1),packages:パッケージ(corechart)
-    google.load('visualization', '1', { 'packages': ['corechart'] });
-    // グラフを描画する為のコールバック関数を指定
-    google.setOnLoadCallback(drawChart);
-
     // データを並び替え
     dataAll.sort(function (a, b) {
         if (a[1] > b[1]) return -1;
@@ -129,68 +124,10 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     dataAll.push([pokeBack["name"], statsAvr, expBackAvr, rateWin, pokeBack["typesName"], typeEffectiveAvr, rateWinType]);
 }
 
-// グラフの描画   
-function drawChart() {
-    // 配列からデータの生成
-    const dataSrcStatsBase = google.visualization.arrayToDataTable(dataChartStatsBase);
-
-    // オプションの設定
-    const optionsStatsBase = {
-        title: "実数値推移比較",
-        legend: {
-            position: 'top',
-            textStyle: { fontSize: 15 }
-        },
-        vAxis: {
-            title: '実数値',
-            minValue: 0,
-        },
-        hAxis: {
-            title: 'バトル数',
-            minValue: 0,
-            format: "####",
-        }
-    };
-
-    // 指定されたIDの要素に折れ線グラフを作成
-    const chartStatsBase = new google.visualization.LineChart(document.getElementById("chartStatsBase"));
-
-    // グラフの描画
-    chartStatsBase.draw(dataSrcStatsBase, optionsStatsBase);
-
-    // 配列からデータの生成
-    const dataSrcExp = google.visualization.arrayToDataTable(dataChartExp);
-
-    // オプションの設定
-    const optionsExp = {
-        title: "経験値推移比較",
-        legend: {
-            position: 'top',
-            textStyle: { fontSize: 15 }
-        },
-        vAxis: {
-            title: '経験値',
-            minValue: 0,
-            maxValue: 10
-        },
-        hAxis: {
-            title: 'バトル数',
-            minValue: 0,
-            format: "####",
-        }
-    };
-
-    // 指定されたIDの要素に折れ線グラフを作成
-    const chartExp = new google.visualization.LineChart(document.getElementById("chartExp"));
-
-    // グラフの描画
-    chartExp.draw(dataSrcExp, optionsExp);
-}
-
 // 表を表示
 function tableSimulation(data) {
     // テーブルを取得
-    const table = document.getElementById("tableSimulationAll");
+    const table = document.getElementById("sampleTable");
 
     for (let i = 0; i < data.length; ++i) {
         // 表の一番最後に1行追加
