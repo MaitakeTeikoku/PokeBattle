@@ -41,6 +41,22 @@ async function simulationStart() {
     // グラフを描画する為のコールバック関数を指定
     google.setOnLoadCallback(drawChart);
 
+    // データを並び替え
+    dataAll.sort(function (a, b) {
+        if (a[1] > b[1]) return -1;
+        if (a[1] < b[1]) return 1;
+        
+        if (a[2] > b[2]) return -1;
+        if (a[2] < b[2]) return 1;
+
+        if (a[3] > b[3]) return -1;
+        if (a[3] < b[3]) return 1;
+
+        return 0;
+    });
+
+    tableSimulation(dataAll);
+
     setElem("info", "読み込み完了！");
 }
 
@@ -110,7 +126,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
     const rateWinType = floorDecimal(((winType) / battleSum) * 100, 3);
     const typeEffectiveAvr = floorDecimal(typeEffectiveSum / battleSum, 3);
 
-    dataAll
+    dataAll.push([pokeBack["name"], statsAvr, expBackAvr, rateWin, pokeBack["typesName"], typeEffectiveAvr, rateWinType]);
 }
 
 // グラフの描画   
@@ -169,6 +185,29 @@ function drawChart() {
 
     // グラフの描画
     chartExp.draw(dataSrcExp, optionsExp);
+}
+
+// 表を表示
+function tableSimulation(data) {
+    // テーブルを取得
+    const table = document.getElementById("tableSimulationAll");
+
+    for (let i = 0; i < data.length; ++i) {
+        // 表の一番最後に1行追加
+        let tr = table.insertRow(-1);
+
+        for (let j = 0; j < data[i].length; ++j) {
+            // 順位を表示
+            let td = tr.insertCell(-1);
+            td.innerHTML = data[i][j];
+            td.classList.add("simulationTd" + i);
+        }
+
+        // 順位を表示
+        let td = tr.insertCell(0);
+        td.innerHTML = i + 1;
+        td.classList.add("simulationTdRank");
+    }
 }
 
 
