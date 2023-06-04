@@ -10,23 +10,20 @@ async function displaySimulation() {
     setElem("dexRange", dexRange);
     setElem("expBackMin", expBackMin);
     setElem("expBackMax", expBackMax);
-
-    sliderExpFront.min = expFrontMin;
-    sliderExpFront.max = expFrontMax;
-    sliderExpFront.step = expFrontStep;
-    sliderExpFront.value = 1;
+    setElem("expFrontMin", expFrontMin);
+    setElem("expFrontMax", expFrontMax);
 
     // URLを取得
     const url = new URL(window.location.href);
     const params = url.searchParams;
 
-    setElem("urlPath", url.protocol + url.host + url.pathname + "?numDexBack=1&expBackDefault=1&numBattle=100&repeat=10&valueExpFront=1");
+    setElem("urlPath", url.protocol + url.host + url.pathname + "?numDexBack=1&expBack=1&numBattle=100&repeat=10&expFront=1");
 
     let numDexBack = params.get("numDexBack");
-    let expBackDefault = params.get("expBackDefault");
+    let expBackDefault = params.get("expBack");
     let numBattle = params.get("numBattle");
     let repeat = params.get("repeat");
-    let valueExpFront = params.get("valueExpFront");
+    let expFront = params.get("expFront");
     
     elemDisabled("submitSimulation", false);
 
@@ -50,20 +47,19 @@ async function displaySimulation() {
     } else {
         repeat = Number(repeat);
     }
-    if (valueExpFront == null) {
-        valueExpFront = 1;
+    if (expFront == null) {
+        expFront = 1;
     } else {
-        valueExpFront = Number(valueExpFront);
+        expFront = Number(expFront);
     }
-
+    
     document.getElementById("numDexBack").value = numDexBack;
     document.getElementById("expBackDefault").value = expBackDefault;
     document.getElementById("numBattle").value = numBattle;
     document.getElementById("repeat").value = repeat;
-    document.getElementById("sliderExpFront").value = valueExpFront;
-    setCurrentValue(valueExpFront);
+    document.getElementById("expFront").value = expFront;
 
-    simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront);
+    simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
 }
 
 async function simulationStart() {
@@ -71,12 +67,12 @@ async function simulationStart() {
     const expBackDefault = Number(document.getElementById("expBackDefault").value);
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
-    const valueExpFront = Number(document.getElementById("sliderExpFront").value);
+    const expFront = Number(document.getElementById("expFront").value);
 
-    await simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront);
+    await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
 }
 
-async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueExpFront) {
+async function simulation(numDexBack, expBackDefault, numBattle, repeat, expFront) {
     setElem("info", "");
     if (numDexBack < 1 || numDexBack > dexRange) {
         setElem("info", "ポケモンの図鑑番号の値が不正です。");
@@ -122,7 +118,7 @@ async function simulation(numDexBack, expBackDefault, numBattle, repeat, valueEx
         dataChart[1].push(expBack);
         
         for (let j = 1;  j <= numBattle; ++j) {
-            let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, valueExpFront);
+            let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, expFront);
             switch (infoBattle) {
                 case 1:
                     win ++;
