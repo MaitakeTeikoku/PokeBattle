@@ -13,40 +13,40 @@
         <p></p>
 
         <dev class="discription">
-            ＊URLに以下のようなパラメータを付けて比較するポケモンの数を変更することもできます。<br>
+            ＊URLにパラメータを付けて比較するポケモンの数を変更することもできます。<br>
             <textarea id="urlPath" class="urlPath"></textarea>
+            <button type="button" id="urlPathButton" onclick="urlPath(); return false;">上記のリンクへ移動</button>
         </dev>
         
         <dev id="info"></dev>
         <p></p>
 
-        図鑑範囲：1～<dev id="dexRange"></dev>
-        　初期経験値範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>
-        <p></p>
-
         <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
+            <label>バトル回数：
+                <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="3em" required></input>
+            </label>
+
+            　<label>繰り返し：
+                <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="10" size="3em" required></input>
+            </label>
+            <p></p>
+
+            <label>野生の経験値：<span id="valueExpFront"></span>
+                <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
+            </label>
+            <p></p>
+            　　　　　　　図鑑番号範囲：1～<dev id="dexRange"></dev>
+            　初期経験値範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>
+            <p></p>
             <div id="simulationIcons"></div>
 
-                <label>バトル回数：
-                    <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="3em" required></input>
-                </label>
-
-                　<label>繰り返し：
-                    <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="10" size="3em" required></input>
-                </label>
-                <p></p>
-
-                <label>野生の経験値：<span id="valueExpFront"></span>
-                    <input type="range" id="sliderExpFront" name="sliderExpFront" value="1"></input>
-                </label>
-                <p></p>
-
-                <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
+            <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
         </form>
 
         <div id="simulationImages"></div>
         
-        <div id="chart" style="width: 1280px; height: 720px;"></div>
+        <div id="chartStatsBase" style="width: 1280px; height: 720px;"></div>
+        <div id="chartExp" style="width: 1280px; height: 720px;"></div>
 
 
 
