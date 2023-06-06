@@ -74,16 +74,16 @@ async function simulationStart() {
 
     await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
 
-    // 手持ちのポケモン表示
-    const imgSrcBack = await getPokeImage(numDexBack, false, false, true);
-    const imgBack = document.getElementById("imgSrcBack");
-    imgBack.src = imgSrcBack;
-
     setElem("info", "読み込み完了！");
     elemDisabled("submitSimulation", false);
 }
 
 async function simulation(numDexBack, expBackDefault, numBattle, repeat, expFront) {
+    // 手持ちのポケモン表示
+    const imgSrcBack = await getPokeImage(numDexBack, false, false, true);
+    const imgBack = document.getElementById("imgSrcBack");
+    imgBack.src = imgSrcBack;
+    
     let formData = new FormData();
     formData.set('action', "simulationSingle");
     formData.set('numDexBack', numDexBack);
