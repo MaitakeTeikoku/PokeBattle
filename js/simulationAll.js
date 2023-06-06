@@ -12,6 +12,7 @@ async function displaySimulation() {
 
 async function simulationStart() {
     elemDisabled("submitSimulation", true);
+    setElem("info", "読み込み中...");
 
     const expBackDefault = Number(document.getElementById("expBackDefault").value);
     const numBattle = Number(document.getElementById("numBattle").value);
@@ -19,9 +20,15 @@ async function simulationStart() {
     const expFront = Number(document.getElementById("expFront").value);
 
     const runTime = Math.max(3, Math.floor((numBattle * repeat * 0.569 - 5.11)));
-    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    setElem("runTime", "予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    // タイマーをスタート
+    startTime = Date.now();
+    displayTime();
 
     await simulation(expBackDefault, numBattle, repeat, expFront);
+
+    // タイマーをストップ
+    clearTimeout(timeoutID);
 
     elemDisabled("submitSimulation", false);
 }
@@ -42,7 +49,6 @@ async function simulation(expBackDefault, numBattle, repeat, expFront) {
             return response.json();
         })
         .then(data => {
-            console.log(data)
             if (data.result) {
                 tableSimulation(data.dataAll);
             } else {

@@ -28,6 +28,8 @@ async function displaySimulation() {
         numPokeSum = 2;
     }
 
+    setElem("urlPath", url.protocol + url.host + url.pathname + "?numPoke=" + numPokeSum);
+
     let simulationIcons = "";
     let simulationImages = "";
     for (let i = 1; i <= numPokeSum; ++i) {
@@ -43,6 +45,7 @@ async function displaySimulation() {
 
 async function simulationStart() {
     elemDisabled("submitSimulation", true);
+    setElem("info", "読み込み中...");
 
     dataTitle = ["バトル数"];
     dataChartStatsBase = [];
@@ -62,9 +65,12 @@ async function simulationStart() {
     const repeat = Number(document.getElementById("repeat").value);
     const expFront = Number(document.getElementById("expFront").value);
 
-    const runTime = Math.max(2, Math.floor((numBattle * repeat * 0.000575 + 2.11) * numPokeSum));
+    const runTime = Math.max(2, Math.floor(numBattle * repeat * 0.000575 + 2.11));
     const runTimeSum = Math.floor(runTime * numPokeSum);
-    setElem("info", "読み込み中...\n1匹当たりの予測時間: 約" + runTime + "秒 ＊タイムアウト: 360秒\n合計予測時間: 約" + runTimeSum +"秒");
+    setElem("runTime", "予測時間: 約" + runTimeSum +"秒\n1匹当たりの予測時間: 約" + runTime + "秒 ＊タイムアウト: 360秒");
+    // タイマーをスタート
+    startTime = Date.now();
+    displayTime();
 
     for (let i = 1; i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
@@ -77,6 +83,9 @@ async function simulationStart() {
         let imgBack = document.getElementById("imgSrcBack" + i);
         imgBack.src = imgSrcBack;
     }
+
+    // タイマーをストップ
+    clearTimeout(timeoutID);
 
     dataChartStatsBase.unshift(dataTitle);
     dataChartExp.unshift(dataTitle);

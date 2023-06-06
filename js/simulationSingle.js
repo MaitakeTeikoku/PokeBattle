@@ -25,11 +25,11 @@ async function displaySimulationSingle() {
     let repeat = params.get("repeat");
     let expFront = params.get("expFront");
 
-    elemDisabled("submitSimulation", false);
-
     if (numDexBack == null) {
+        elemDisabled("submitSimulation", false);
         return;
     } else {
+        setElem("info", "読み込み中...");
         numDexBack = numDexBack;
     }
     if (expBackDefault == null) {
@@ -53,9 +53,13 @@ async function displaySimulationSingle() {
         expFront = expFront;
     }
 
+    setElem("urlPath", url.protocol + url.host + url.pathname + "?numDexBack=" + numDexBack + "&expBack=" + expBackDefault + "&numBattle=" + numBattle + "&repeat=" + repeat + "&expFront=" + expFront);
+
     const runTime = Math.max(2, Math.floor(numBattle * repeat * 0.000575 + 2.11));
-    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
-    setElem("urlPath", url.protocol + url.host + url.pathname + "?numDexBack=" + numDexBack + "&expBack=" + expBack + "&numBattle=" + numBattle + "&repeat=" + repeat + "&expFront=" + expFront);
+    setElem("runTime", "予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    // タイマーをスタート
+    startTime = Date.now();
+    displayTime();
 
     document.getElementById("numDexBack").value = numDexBack;
     document.getElementById("expBackDefault").value = expBackDefault;
@@ -64,6 +68,11 @@ async function displaySimulationSingle() {
     document.getElementById("expFront").value = expFront;
 
     await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
+
+    // タイマーをストップ
+    clearTimeout(timeoutID);
+
+    elemDisabled("submitSimulation", false);
 }
 
 async function simulationStart() {
@@ -76,9 +85,16 @@ async function simulationStart() {
     const expFront = document.getElementById("expFront").value;
 
     const runTime = Math.max(2, Math.floor(numBattle * repeat * 0.000575 + 2.11));
-    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    setElem("info", "読み込み中...");
+    setElem("runTime", "予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    // タイマーをスタート
+    startTime = Date.now();
+    displayTime();
 
     await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
+
+    // タイマーをストップ
+    clearTimeout(timeoutID);
 
     elemDisabled("submitSimulation", false);
 }

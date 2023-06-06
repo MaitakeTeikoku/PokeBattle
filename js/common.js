@@ -16,6 +16,11 @@ let expFrontMin;
 let expFrontMax;
 let expFrontStep;
 
+// タイマー
+let startTime;
+let stopTime = 0;
+let timeoutID;
+
 
 
 // スリープ
@@ -193,4 +198,15 @@ function urlPath() {
         // テキストがURL形式でない場合、エラーメッセージを表示
         alert("入力されたテキストはURLではありません。");
     }
+}
+
+// 時間を表示する関数
+function displayTime() {
+    const currentTime = new Date(Date.now() - startTime + stopTime);
+    const m = String(currentTime.getUTCMinutes()).padStart(2, '0');
+    const s = String(currentTime.getUTCSeconds()).padStart(2, '0');
+    const ms = String(currentTime.getUTCMilliseconds()).padStart(3, '0');
+    
+    time.textContent = `${m}:${s}.${ms}`;
+    timeoutID = setTimeout(displayTime, 10);
 }
