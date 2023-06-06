@@ -53,6 +53,10 @@ async function displaySimulationSingle() {
         expFront = expFront;
     }
 
+    const runTime = Math.max(2, Math.floor(numBattle * repeat * 0.000575 + 2.11));
+    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+    setElem("urlPath", url.protocol + url.host + url.pathname + "?numDexBack=" + numDexBack + "&expBack=" + expBack + "&numBattle=" + numBattle + "&repeat=" + repeat + "&expFront=" + expFront);
+
     document.getElementById("numDexBack").value = numDexBack;
     document.getElementById("expBackDefault").value = expBackDefault;
     document.getElementById("numBattle").value = numBattle;
@@ -64,7 +68,6 @@ async function displaySimulationSingle() {
 
 async function simulationStart() {
     elemDisabled("submitSimulation", true);
-    setElem("info", "読み込み中...");
 
     const numDexBack = document.getElementById("numDexBack").value;
     const expBackDefault = document.getElementById("expBackDefault").value;
@@ -72,9 +75,11 @@ async function simulationStart() {
     const repeat = document.getElementById("repeat").value;
     const expFront = document.getElementById("expFront").value;
 
+    const runTime = Math.max(2, Math.floor(numBattle * repeat * 0.000575 + 2.11));
+    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+
     await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront);
 
-    setElem("info", "読み込み完了！");
     elemDisabled("submitSimulation", false);
 }
 
@@ -159,6 +164,8 @@ function drawChart() {
     const chart = new google.visualization.LineChart(document.getElementById("chart"));
     // グラフの描画
     chart.draw(dataSrc, options);
+
+    setElem("info", "読み込み完了！");
 }
 
 

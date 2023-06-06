@@ -43,7 +43,6 @@ async function displaySimulation() {
 
 async function simulationStart() {
     elemDisabled("submitSimulation", true);
-    setElem("info", "読み込み中...");
 
     dataTitle = ["バトル数"];
     dataChartStatsBase = [];
@@ -62,6 +61,10 @@ async function simulationStart() {
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
     const expFront = Number(document.getElementById("expFront").value);
+
+    const runTime = Math.max(2, Math.floor((numBattle * repeat * 0.000575 + 2.11) * numPokeSum));
+    const runTimeSum = Math.floor(runTime * numPokeSum);
+    setElem("info", "読み込み中...\n1匹当たりの予測時間: 約" + runTime + "秒 ＊タイムアウト: 360秒\n合計予測時間: 約" + runTimeSum +"秒");
 
     for (let i = 1; i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
@@ -83,7 +86,6 @@ async function simulationStart() {
     // グラフを描画する為のコールバック関数を指定
     google.setOnLoadCallback(drawChart);
 
-    setElem("info", "読み込み完了！");
     elemDisabled("submitSimulation", false);
 }
 
@@ -197,6 +199,8 @@ function drawChart() {
 
     // グラフの描画
     chartExp.draw(dataSrcExp, optionsExp);
+
+    setElem("info", "読み込み完了！");
 }
 
 

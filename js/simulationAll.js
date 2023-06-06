@@ -12,16 +12,17 @@ async function displaySimulation() {
 
 async function simulationStart() {
     elemDisabled("submitSimulation", true);
-    setElem("info", "読み込み中...");
 
     const expBackDefault = Number(document.getElementById("expBackDefault").value);
     const numBattle = Number(document.getElementById("numBattle").value);
     const repeat = Number(document.getElementById("repeat").value);
     const expFront = Number(document.getElementById("expFront").value);
 
+    const runTime = Math.max(3, Math.floor((numBattle * repeat * 0.569 - 5.11)));
+    setElem("info", "読み込み中...\n予測時間: 約" + runTime +"秒 ＊タイムアウト: 360秒");
+
     await simulation(expBackDefault, numBattle, repeat, expFront);
 
-    setElem("info", "読み込み完了！");
     elemDisabled("submitSimulation", false);
 }
 
@@ -74,6 +75,8 @@ function tableSimulation(data) {
         td.innerHTML = i + 1;
         td.classList.add("simulationTdRank");
     }
+
+    setElem("info", "読み込み完了！");
 }
 
 
