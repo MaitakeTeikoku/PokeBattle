@@ -22,6 +22,11 @@
 
     <dev id="info"></dev>
     <p></p>
+    <dev id="time" class="time">00:00.000</dev>
+    <p></p>
+    <dev id="runTime"></dev>
+    <p></p>
+
 
     <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
         <div id="simulationIcons">
@@ -51,7 +56,8 @@
             <p></p>
 
             <label>野生の経験値(<dev id="expFrontMin"></dev>～<dev id="expFrontMax"></dev>)：
-                <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
+                <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em"
+                    required></input>
             </label>
             <p></p>
 
@@ -59,7 +65,7 @@
 
         </div>
     </form>
-    
+
     <img id="imgSrcBack" class="simulationImage">
     <p></p>
 

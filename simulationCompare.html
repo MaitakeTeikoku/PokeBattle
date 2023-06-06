@@ -1,60 +1,67 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/style.css">
-        <title>ポケバトル</title>
-    </head>
 
-    <body>
-        <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>ポケバトル</title>
+</head>
+
+<body>
+    <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
+    <p></p>
+
+    <dev class="discription">
+        ＊URLにパラメータを付けて比較するポケモンの数を変更することもできます。<br>
+        <textarea id="urlPath" class="urlPath"></textarea>
+        <button type="button" id="urlPathButton" onclick="urlPath(); return false;">上記のリンクへ移動</button>
+    </dev>
+    <p></p>
+
+    <dev id="info"></dev>
+    <p></p>
+    <dev id="time" class="time">00:00.000</dev>
+    <p></p>
+    <dev id="runTime"></dev>
+    <p></p>
+
+    <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
+        <label>バトル回数：
+            <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="6em"
+                required></input>
+        </label>
+
+        　<label>繰り返し：
+            <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="10" size="6em" required></input>
+        </label>
         <p></p>
 
-        <dev class="discription">
-            ＊URLにパラメータを付けて比較するポケモンの数を変更することもできます。<br>
-            <textarea id="urlPath" class="urlPath"></textarea>
-            <button type="button" id="urlPathButton" onclick="urlPath(); return false;">上記のリンクへ移動</button>
-        </dev>
-        <p></p>
-        
-        <dev id="info"></dev>
+        <label>野生の経験値(<dev id="expFrontMin"></dev>～<dev id="expFrontMax"></dev>)：
+            <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em"
+                required></input>
+        </label>
         <p></p>
 
-        <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
-            <label>バトル回数：
-                <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="100" size="6em" required></input>
-            </label>
+        　　　　　　　図鑑番号範囲：1～<dev id="dexRange"></dev>
+        　初期経験値範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>
+        <p></p>
+        <div id="simulationIcons"></div>
 
-            　<label>繰り返し：
-                <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="10" size="6em" required></input>
-            </label>
-            <p></p>
+        <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
+    </form>
 
-            <label>野生の経験値(<dev id="expFrontMin"></dev>～<dev id="expFrontMax"></dev>)：
-                <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
-            </label>
-            <p></p>
+    <div id="simulationImages"></div>
 
-            　　　　　　　図鑑番号範囲：1～<dev id="dexRange"></dev>
-            　初期経験値範囲：<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>
-            <p></p>
-            <div id="simulationIcons"></div>
-
-            <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
-        </form>
-
-        <div id="simulationImages"></div>
-        
-        <div id="chartStatsBase" style="width: 1280px; height: 720px;"></div>
-        <div id="chartExp" style="width: 1280px; height: 720px;"></div>
+    <div id="chartStatsBase" style="width: 1280px; height: 720px;"></div>
+    <div id="chartExp" style="width: 1280px; height: 720px;"></div>
 
 
 
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script src="./js/common.js"></script>
-        <script src="./js/simulationCompare.js"></script>
-    </body>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/simulationCompare.js"></script>
+</body>
 
 </html>

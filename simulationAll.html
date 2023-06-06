@@ -1,61 +1,69 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/style.css">
-        <link rel="stylesheet" href="./css/sort.css">
-        <title>ポケバトル</title>
-    </head>
 
-    <body>
-        <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/sort.css">
+    <title>ポケバトル</title>
+</head>
+
+<body>
+    <button type="button" id="backButton" onclick="location.href='./ranking.html'">ランキングに戻る</button>
+    <p></p>
+
+    <dev id="info"></dev>
+    <p></p>
+    <dev id="time" class="time">00:00.000</dev>
+    <p></p>
+    <dev id="runTime"></dev>
+    <p></p>
+
+    <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
+        <label>バトル回数：
+            <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="10" size="3em"
+                required></input>
+        </label>
+
+        　<label>繰り返し：
+            <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="3" size="3em" required></input>
+        </label>
         <p></p>
-        
-        <dev id="info"></dev>
+
+        <label>野生の経験値(<dev id="expFrontMin"></dev>～<dev id="expFrontMax"></dev>)：
+            <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em"
+                required></input>
+        </label>
         <p></p>
 
-        <form id="formSimulation" class="formSimulation" onsubmit="simulationStart(); return false;">
-            <label>バトル回数：
-                <input type="text" id="numBattle" name="numBattle" pattern="^[1-9][0-9]*$" value="10" size="3em" required></input>
-            </label>
+        <label>初期経験値(<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>)：
+            <input type="text" id="expBackDefault" name="expBackDefault" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1"
+                size="6em" required></input>
+        </label>
+        <p></p>
 
-            　<label>繰り返し：
-                <input type="text" id="repeat" name="repeat" pattern="^[1-9][0-9]*$" value="3" size="3em" required></input>
-            </label>
-            <p></p>
+        <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
+    </form>
 
-            <label>野生の経験値(<dev id="expFrontMin"></dev>～<dev id="expFrontMax"></dev>)：
-                <input type="text" id="expFront" name="expFront" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
-            </label>
-            <p></p>
+    <table id="sampleTable">
+        <tr>
+            <th cmanSortBtn>順位</th>
+            <th cmanSortBtn>名前</th>
+            <th cmanSortBtn>最終実数値平均</th>
+            <th cmanSortBtn>最終経験値平均</th>
+            <th cmanSortBtn>勝率</th>
+            <th cmanSortBtn>タイプ</th>
+            <th cmanSortBtn>タイプ平均倍率</th>
+            <th cmanSortBtn>タイプ勝率</th>
+        </tr>
+    </table>
 
-            <label>初期経験値(<dev id="expBackMin"></dev>～<dev id="expBackMax"></dev>)：
-                <input type="text" id="expBackDefault" name="expBackDefault" pattern="^([1-9]\d*|0)(\.\d+)?$" value="1" size="6em" required></input>
-            </label>
-            <p></p>
-
-            <input type="submit" id="submitSimulation" value="シミュレーションスタート" disabled>
-        </form>
-
-        <table id="sampleTable">
-            <tr>
-                <th cmanSortBtn>順位</th>
-                <th cmanSortBtn>名前</th>
-                <th cmanSortBtn>最終実数値平均</th>
-                <th cmanSortBtn>最終経験値平均</th>
-                <th cmanSortBtn>勝率</th>
-                <th cmanSortBtn>タイプ</th>
-                <th cmanSortBtn>タイプ平均倍率</th>
-                <th cmanSortBtn>タイプ勝率</th>
-            </tr>
-        </table>
-
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script src="./js/common.js"></script>
-        <script src="./js/simulationAll.js"></script>
-        <script src="./js/sort.js"></script>
-    </body>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/simulationAll.js"></script>
+    <script src="./js/sort.js"></script>
+</body>
 
 </html>
