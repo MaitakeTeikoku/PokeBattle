@@ -1,5 +1,5 @@
 // GASのURLを指定
-const urlApi = 'https://script.google.com/macros/s/AKfycbzunitnO5yEXZXnXqI1Mt4mspXsaSta0GRCftnbcpn01pwz_wmT52TXsdn6gOL75LRK/exec';
+const urlApi = 'https://script.google.com/macros/s/AKfycbz3LvWs1v0whyAs4x7UPlsAA7cIQNN7B6jM1QIcFBj2EXIW5RAEZFextQY0OAB-IX51/exec';
 
 // 設定
 let dexRange;
@@ -181,4 +181,16 @@ async function getPokeImage(numDex, valueSprites, valueShiny, valuePosition) {
     }
 
     return imgSrc;
+}
+
+function urlPath() {
+    const text = document.getElementById("urlPath").value;
+    try {
+        const url = new URL(text);
+        // テキストがURL形式の場合、リンク先を開く
+        window.open(url.href, "_blank");
+    } catch (error) {
+        // テキストがURL形式でない場合、エラーメッセージを表示
+        alert("入力されたテキストはURLではありません。");
+    }
 }

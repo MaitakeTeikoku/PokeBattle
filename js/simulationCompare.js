@@ -1,9 +1,7 @@
 let numPokeSum;
-var dataChart;
 var dataTitle;
 var dataChartStatsBase;
 var dataChartExp;
-
 
 
 
@@ -24,7 +22,7 @@ async function displaySimulation() {
     setElem("urlPath", url.protocol + url.host + url.pathname + "?numPoke=2");
 
     numPoke = params.get("numPoke");
-    if (numPoke != null && numPoke > 1) {
+    if (numPoke != null && numPoke > 0) {
         numPokeSum = Math.floor(Number(numPoke));
     } else {
         numPokeSum = 2;
@@ -34,7 +32,7 @@ async function displaySimulation() {
     let simulationImages = "";
     for (let i = 1; i <= numPokeSum; ++i) {
         simulationIcons += '<label>ポケモン' + i + '：　図鑑番号<input type="text" id="numDexBack' + i + '" name="numDexBack' + i + '" value="1" size="4em" required></input></label><label>　初期経験値<input type="text" id="expBackDefault' + i + '" name="expBackDefault' + i + '" value="1" size="6em" required></input></label><p></p>'
-        simulationImages += '<img id="imgSrcBack' + i + '" class="simulationImage"><p></p><dev id="pokeName' + i + '" class="simulationPoke"></dev><br>勝率：<dev id="rateWin' + i + '"></dev>%<br>最終経験値平均：<dev id="expBackAvr' + i + '"></dev><br>最終実数値平均：<dev id="statsAvr' + i + '"></dev><p></p><dev id="pokeType' + i + '" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType' + i + '"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr' + i + '"></dev><p></p>'
+        simulationImages += '<img id="imgSrcBack' + i + '"><p></p><dev id="pokeName' + i + '" class="simulationPoke"></dev><br>勝率：<dev id="rateWin' + i + '"></dev>%<br>最終経験値平均：<dev id="expBackAvr' + i + '"></dev><br>最終実数値平均：<dev id="statsAvr' + i + '"></dev><p></p><dev id="pokeType' + i + '" class="simulationPoke"></dev><br>タイプ勝率：<dev id="rateWinType' + i + '"></dev>%<br>タイプ平均倍率：×<dev id="typeEffectiveAvr' + i + '"></dev><p></p>'
     }
 
     document.getElementById("simulationIcons").innerHTML = simulationIcons;
@@ -44,15 +42,17 @@ async function displaySimulation() {
 }
 
 async function simulationStart() {
-    dataChart;
+    elemDisabled("submitSimulation", true);
+    setElem("info", "読み込み中...");
+
     dataTitle = ["バトル数"];
-    dataChartStatsBase = [[0]];
-    dataChartExp = [[0]];
+    dataChartStatsBase = [];
+    dataChartExp = [];
 
     // 入力チェック
     for (let i = 1; i <= numPokeSum; ++i) {
         let numDexBack = Number(document.getElementById("numDexBack" + i).value);
-        
+
         if (numDexBack < 1 || numDexBack > dexRange) {
             setElem("info", "ポケモン" + i + "の図鑑番号の値が不正です。");
             return false;
@@ -68,6 +68,11 @@ async function simulationStart() {
         let expBackDefault = Number(document.getElementById("expBackDefault" + i).value);
 
         await simulation(numDexBack, expBackDefault, numBattle, repeat, expFront, i);
+
+        // 手持ちのポケモン表示
+        let imgSrcBack = await getPokeImage(numDexBack, true, false, true);
+        let imgBack = document.getElementById("imgSrcBack" + i);
+        imgBack.src = imgSrcBack;
     }
 
     dataChartStatsBase.unshift(dataTitle);
@@ -79,85 +84,61 @@ async function simulationStart() {
     google.setOnLoadCallback(drawChart);
 
     setElem("info", "読み込み完了！");
+    elemDisabled("submitSimulation", false);
 }
 
 async function simulation(numDexBack, expBackDefault, numBattle, repeat, expFront, numPoke) {
-    setElem("info", "");
+    let formData = new FormData();
+    formData.set('action', "simulationSingle");
+    formData.set('numDexBack', numDexBack);
+    formData.set('expBackDefault', expBackDefault);
+    formData.set('numBattle', numBattle);
+    formData.set('repeat', repeat);
+    formData.set('expFront', expFront);
 
-    const battleSum = numBattle * repeat;
+    await fetch(urlApi, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                setElem("pokeName" + numPoke, "【" + data.pokeBack["name"] + "】");
+                setElem("pokeType" + numPoke, "【" + data.pokeBack["typesName"] + "】");
+                setElem("rateWin" + numPoke, data.rateWin);
+                setElem("expBackAvr" + numPoke, data.expBackAvr);
+                setElem("statsAvr" + numPoke, data.statsAvr);
+                setElem("rateWinType" + numPoke, data.rateWinType);
+                setElem("typeEffectiveAvr" + numPoke, data.typeEffectiveAvr);
 
-    // 手持ちのポケモン表示
-    const imgSrcBack = await getPokeImage(numDexBack, false, false, true);
-    const imgBack = document.getElementById("imgSrcBack" + numPoke);
-    imgBack.src = imgSrcBack;
+                const dataChart = data.dataChart;
+                dataTitle.push(numPoke + ": " + data.pokeBack["name"]);
 
-    // 名前取得
-    const pokeBack = getPoke(numDexBack);
-    setElem("pokeName" + numPoke, "【" + numPoke + ": " + pokeBack["name"] + "】");
-    setElem("pokeType" + numPoke, "【" + pokeBack["typesName"] + "】");
-    const stats = pokeBack["stats"];
+                for (let j = 1; j < dataChart.length; ++j) {
+                    let expBackSum = 0;
 
-    dataTitle.push(numPoke + ": " + pokeBack["name"]);
-    dataChartStatsBase[0].push(expBackDefault * pokeBack["stats"]);
-    dataChartExp[0].push(expBackDefault);
+                    for (let k = 1; k < dataChart[j].length; ++k) {
+                        expBackSum += dataChart[j][k];
+                    }
 
-    let win = 0;
-    let expBackSum = 0;
-    let typeEffectiveSum = 0;
-    let winType = 0;
-    dataChart = [];
+                    if (numPoke == 1) {
+                        dataChartExp.push([j - 1, expBackSum / repeat]);
+                        dataChartStatsBase.push([j - 1, (expBackSum / repeat) * data.pokeBack["stats"]]);
+                    } else {
+                        dataChartExp[j - 1].push(expBackSum / repeat);
+                        dataChartStatsBase[j - 1].push((expBackSum / repeat) * data.pokeBack["stats"]);
+                    }
+                }
 
-    for (let i = 1; i <= repeat; ++i) {
-        let expBack = expBackDefault;
-
-        for (let j = 1; j <= numBattle; ++j) {
-            if (numPoke == 1 && i == 1) {
-                dataChartStatsBase.push([j]);
-                dataChartExp.push([j]);
-            }
-
-            let [infoBattle, expBackUpdate, typeEffective] = battle(numDexBack, expBack, expFront);
-            if (infoBattle >= 0) {
-                win++;
-            }
-
-            expBack = expBackUpdate;
-
-            if (i == 1) {
-                dataChart.push(expBack);
             } else {
-                dataChart.splice(j - 1, 1, Number(dataChart[j - 1]) + expBack);
+                setElem("info", data.message);
             }
-
-            if (j == numBattle) {
-                expBackSum += expBack;
-            }
-
-            if (typeEffective >= 1) {
-                winType++;
-            }
-
-            typeEffectiveSum += typeEffective;
-        }
-    }
-
-    for (let i = 0; i < dataChart.length; ++i) {
-        dataChart.splice(i, 1, Number(dataChart[i]) / repeat);
-        dataChartStatsBase[i + 1].push(dataChart[i] * stats);
-        dataChartExp[i + 1].push(dataChart[i]);
-    }
-
-    const rateWin = floorDecimal(((win) / battleSum) * 100, 3);
-    setElem("rateWin" + numPoke, rateWin);
-    const expBackAvr = floorDecimal(expBackSum / repeat, 3);
-    setElem("expBackAvr" + numPoke, expBackAvr);
-    const statsAvr = Math.floor(expBackAvr * stats);
-    setElem("statsAvr" + numPoke, statsAvr);
-
-    const rateWinType = floorDecimal(((winType) / battleSum) * 100, 3);
-    setElem("rateWinType" + numPoke, rateWinType);
-    const typeEffectiveAvr = floorDecimal(typeEffectiveSum / battleSum, 3);
-    setElem("typeEffectiveAvr" + numPoke, typeEffectiveAvr);
+        })
+        .catch(error => {
+            setElem("info", "シミュレーションエラー\n" + error);
+        });
 }
 
 // グラフの描画   
@@ -218,17 +199,7 @@ function drawChart() {
     chartExp.draw(dataSrcExp, optionsExp);
 }
 
-function urlPath() {
-    const text = document.getElementById("urlPath").value;
-    try {
-        const url = new URL(text);
-        // テキストがURL形式の場合、リンク先を開く
-        window.open(url.href, "_blank");
-    } catch (error) {
-        // テキストがURL形式でない場合、エラーメッセージを表示
-        alert("入力されたテキストはURLではありません。");
-    }
-}
+
 
 
 

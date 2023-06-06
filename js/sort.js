@@ -70,8 +70,8 @@ function tSort(argObj) {
     for (var i = wStartRow; i < wTR.length; i++) {
         var j = i - wStartRow;
         wItem[j] = wTR[i].cells[wSortKey[2]].innerText.toString();
-
-        if (wItem[j].match(/^[-]?[0-9,\.]+$/)) {
+        
+        if (wItem[j].match(/^[-]?[0-9]+(\.[0-9]+)?$/)) {
         } else {
             wNotNum = 1;
         }
@@ -147,8 +147,8 @@ function sortNumA(a, b) {
     //===============================================================
     //  数字のソート関数（昇順）
     //===============================================================
-    a = parseInt(a.replace(/,/g, ''));
-    b = parseInt(b.replace(/,/g, ''));
+    a = parseFloat(a.replace(/,/g, ''));
+    b = parseFloat(b.replace(/,/g, ''));
     return a - b;
 }
 
@@ -156,8 +156,8 @@ function sortNumD(a, b) {
     //===============================================================
     //  数字のソート関数（降順）
     //===============================================================
-    a = parseInt(a.replace(/,/g, ''));
-    b = parseInt(b.replace(/,/g, ''));
+    a = parseFloat(a.replace(/,/g, ''));
+    b = parseFloat(b.replace(/,/g, ''));
     return b - a;
 }
 
