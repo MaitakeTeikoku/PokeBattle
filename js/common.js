@@ -203,10 +203,11 @@ function urlPath() {
 // 時間を表示する関数
 function displayTime() {
     const currentTime = new Date(Date.now() - startTime + stopTime);
-    const m = String(currentTime.getUTCMinutes()).padStart(2, '0');
-    const s = String(currentTime.getUTCSeconds()).padStart(2, '0');
-    const ms = String(currentTime.getUTCMilliseconds()).padStart(3, '0');
-    
-    time.textContent = `${m}:${s}.${ms}`;
-    timeoutID = setTimeout(displayTime, 10);
+    // ミリ秒を秒に変換
+    const totalSeconds = Math.floor(currentTime.getTime() / 1000);
+    // 秒の部分を計算（小数点以下1桁まで）
+    const secondsWithDecimal = (totalSeconds + currentTime.getMilliseconds() / 1000).toFixed(1);
+  
+    time.textContent = secondsWithDecimal;
+    timeoutID = setTimeout(displayTime, 100);
 }
